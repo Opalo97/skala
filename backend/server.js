@@ -19,6 +19,14 @@ app.get('/', (req, res) => {
     res.send('¡El servidor de la plataforma multimedia está funcionando!');
 });
 
+// 👇 AQUÍ CONECTAS TUS RUTAS 👇
+app.use('/api/usuarios', require('./routes/usuariosRoutes'));
+app.use('/api/productos', require('./routes/productosRoutes'));
+app.use('/api/inspiraciones', require('./routes/inspiracionRoutes'));
+app.use('/api/comentarios', require('./routes/comentarioRoutes'));
+app.use('/api/colecciones', require('./routes/coleccionRoutes'));
+app.use('/api/listas', require('./routes/listaRoutes'));
+
 // Arrancar el servidor
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
