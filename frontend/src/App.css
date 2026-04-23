@@ -25,14 +25,15 @@ body, html {
   top: 0;
   left: 60px;
   right: 0;
-  height: 60px;
+  height: 70px;
   z-index: 99;
 }
 
 .header-logo {
-  height: 80px;
+  height: 140px;
   width: auto;
   object-fit: contain;
+ 
 }
 
 /* Contenido: scrolleable entre header y footer */

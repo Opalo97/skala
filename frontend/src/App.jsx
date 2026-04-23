@@ -31,6 +31,7 @@ function App() {
           <Route path="/perfil" element={<Perfil />} />
           <Route path="/guardados" element={<Guardados />} />
           <Route path="/filtros" element={<Filtros />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />

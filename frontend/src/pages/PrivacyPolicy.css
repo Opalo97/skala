@@ -1,0 +1,174 @@
+.privacy-page {
+  padding: 40px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  margin-left: 80px; /* Ajusta al ancho del sidebar */
+}
+
+/* Header de la página */
+.privacy-header {
+  text-align: center;
+  margin-bottom: 50px;
+  padding: 30px 0;
+}
+
+
+
+.privacy-header .privacy-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+/* Grid de tarjetas */
+.privacy-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 24px;
+  margin-bottom: 50px;
+}
+
+/* Tarjetas */
+.privacy-card {
+  border: 2px solid #8b5a2b;
+  border-radius: 20px;
+  padding: 28px;
+  background-color: rgba(245, 230, 208, 0.4);
+  transition: all 0.3s ease;
+}
+
+.privacy-card:hover {
+  box-shadow: 0 6px 20px rgba(139, 90, 43, 0.15);
+  border-color: #5c3318;
+}
+
+.card-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #5c3318;
+  margin: 0 0 16px 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.card-body {
+  font-size: 14px;
+  line-height: 1.8;
+  color: #333;
+  text-align: justify;
+}
+
+.card-body p {
+  margin: 12px 0;
+}
+
+.card-body ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 16px 0;
+}
+
+.card-body li {
+  padding: 8px 0 8px 24px;
+  position: relative;
+  margin: 8px 0;
+}
+
+.card-body li:before {
+  content: "•";
+  position: absolute;
+  left: 8px;
+  color: #8b5a2b;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.card-body strong {
+  color: #5c3318;
+  font-weight: 700;
+}
+
+.card-body a {
+  color: #8b5a2b;
+  text-decoration: none;
+  font-weight: 600;
+  border-bottom: 1px solid #8b5a2b;
+  transition: all 0.2s ease;
+}
+
+.card-body a:hover {
+  color: #5c3318;
+  border-bottom-color: #5c3318;
+}
+
+.email {
+  font-size: 16px;
+  font-weight: 600;
+  color: #8b5a2b;
+  margin-top: 12px !important;
+}
+
+/* Footer de privacidad */
+.privacy-footer {
+  text-align: center;
+  padding: 40px 20px;
+  border-top: 1px solid #e0d5c7;
+  color: #8b5a2b;
+  font-size: 14px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .privacy-page {
+    padding: 20px 10px;
+    margin-left: 80px;
+  }
+
+  .privacy-header .brand {
+    font-size: 32px;
+    letter-spacing: 6px;
+  }
+
+  .privacy-header .privacy-title {
+    font-size: 24px;
+  }
+
+  .privacy-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .privacy-card {
+    padding: 20px;
+    border-radius: 16px;
+  }
+
+  .card-title {
+    font-size: 16px;
+  }
+
+  .card-body {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .privacy-page {
+    margin-left: 80px;
+    padding: 15px 5px;
+  }
+
+  .privacy-header .brand {
+    font-size: 24px;
+  }
+
+  .privacy-header .privacy-title {
+    font-size: 18px;
+  }
+
+  .privacy-card {
+    padding: 16px;
+    border-radius: 12px;
+  }
+}
