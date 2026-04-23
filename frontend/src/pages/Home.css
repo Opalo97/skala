@@ -1,0 +1,31 @@
+.home-container {
+  padding: 20px;
+}
+
+.inspiraciones-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+  grid-auto-rows: auto;
+  grid-auto-flow: dense;
+}
+
+.inspiracion-item {
+  text-decoration: none;
+  border-radius: 16px;
+  overflow: hidden;
+  aspect-ratio: 3/4;
+  display: block;
+  transition: transform 0.2s ease;
+}
+
+.inspiracion-item:hover {
+  transform: scale(1.02);
+}
+
+.inspiracion-imagen {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+

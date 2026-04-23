@@ -1,0 +1,37 @@
+.sidebar {
+  width: 80px;
+  background-color: #f5e6d0; /* beige de tu mockup */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  gap: 0;
+  padding: 20px 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  z-index: 100;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.06);
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  color: #813405;         /* marrón de tu mockup */
+  transition: background-color 0.2s, color 0.2s, transform 0.2s;
+  text-decoration: none;
+}
+
+.sidebar-item:hover {
+  background-color: #e8d5b7;
+}
+
+.sidebar-item.active {
+  background-color: #d4b896;
+  color: #813405;
+}
