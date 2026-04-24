@@ -8,6 +8,7 @@ import Layout from './components/Layout'
 import Home from './pages/Home'
 import Dashboard from './pages/Dashboard'
 import Login from './pages/Login'
+import Register from './pages/Register'
 import UploadItem from './pages/UploadItem'
 import ItemDetail from './pages/ItemDetail'
 import PrivacyPolicy from './pages/PrivacyPolicy'
@@ -24,6 +25,8 @@ function App() {
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/upload" element={<UploadItem />} />
           <Route path="/item/:id" element={<ItemDetail />} />
           <Route path="/inspiracion/:id" element={<InspiracionDetail />} />
@@ -33,8 +36,6 @@ function App() {
           <Route path="/filtros" element={<Filtros />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         </Route>
-        <Route path="/login" element={<Login />} />
-        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
       </Routes>
     </Router>
   )

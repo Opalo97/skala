@@ -1,0 +1,139 @@
+.perfil-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.perfil-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  padding: 0 20px;
+}
+
+.perfil-header h1 {
+  margin: 0;
+  font-size: 28px;
+  color: #333;
+}
+
+.logout-btn {
+  padding: 10px 20px;
+  background-color: #8B5A3C;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+  background-color: #6d4530;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(139, 90, 60, 0.3);
+}
+
+.perfil-card {
+  background: white;
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.perfil-image {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 24px;
+  border: 4px solid #f5e6d0;
+}
+
+.perfil-info h2 {
+  font-size: 24px;
+  color: #333;
+  margin: 0 0 8px 0;
+}
+
+.username {
+  font-size: 16px;
+  color: #666;
+  margin: 0 0 8px 0;
+}
+
+.email {
+  font-size: 14px;
+  color: #999;
+  margin: 0 0 16px 0;
+}
+
+.bio {
+  font-size: 14px;
+  color: #666;
+  margin: 0 0 24px 0;
+  line-height: 1.5;
+}
+
+.perfil-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 16px;
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid #eee;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: #999;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.stat-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: #8B5A3C;
+}
+
+@media (max-width: 480px) {
+  .perfil-header {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .perfil-header h1 {
+    font-size: 24px;
+  }
+
+  .logout-btn {
+    width: 100%;
+  }
+
+  .perfil-card {
+    padding: 24px 16px;
+  }
+
+  .perfil-image {
+    width: 100px;
+    height: 100px;
+  }
+
+  .perfil-info h2 {
+    font-size: 20px;
+  }
+
+  .perfil-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

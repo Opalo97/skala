@@ -32,6 +32,14 @@
 }
 
 .sidebar-item.active {
-  background-color: #d4b896;
-  color: #813405;
+  background-color: #813405;
+  color: #f5e6d0;
+}
+
+.user-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font-family: inherit;
 }
