@@ -9,7 +9,7 @@ import Home from './pages/Home'
 import Dashboard from './pages/Dashboard'
 import Login from './pages/Login'
 import Register from './pages/Register'
-import UploadItem from './pages/UploadItem'
+import CrearProducto from './pages/CrearProducto'
 import ItemDetail from './pages/ItemDetail'
 import PrivacyPolicy from './pages/PrivacyPolicy'
 import InspiracionDetail from './pages/InspiracionDetail'
@@ -29,7 +29,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/upload" element={<UploadItem />} />
+          <Route path="/upload" element={<CrearProducto />} />
           <Route path="/crear-inspiracion" element={<CrearInspiracion />} />
           <Route path="/item/:id" element={<ItemDetail />} />
           <Route path="/inspiracion/:id" element={<InspiracionDetail />} />

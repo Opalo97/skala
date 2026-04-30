@@ -16,10 +16,24 @@ const obtenerProductos = async (req, res) => {
 // Acción: Crear un nuevo producto
 const crearProducto = async (req, res) => {
     try {
+        // Validar que subidoPor está presente
+        if (!req.body.subidoPor) {
+            return res.status(400).json({ mensaje: 'Se requiere el ID del usuario (subidoPor)' });
+        }
+
+        // Validar que el nombre está presente
+        if (!req.body.nombre) {
+            return res.status(400).json({ mensaje: 'El nombre del producto es requerido' });
+        }
+
         const nuevoProducto = await Producto.create(req.body);
+
+        // Populate el usuario que lo creó para obtener más información
+        await nuevoProducto.populate('subidoPor', 'username nombreCompleto');
+
         res.status(201).json(nuevoProducto);
     } catch (error) {
-        res.status(400).json({ mensaje: 'Error al crear el producto', error });
+        res.status(400).json({ mensaje: 'Error al crear el producto', error: error.message });
     }
 };
 
