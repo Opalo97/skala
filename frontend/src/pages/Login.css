@@ -1,7 +1,7 @@
 .auth-page {
   width: 100%;
   min-height: calc(100vh - 160px);
-  background: linear-gradient(135deg, #f5e6d0 0%, #e8d5b7 100%);
+  background: white;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -12,8 +12,8 @@
 }
 
 .auth-container {
-  background: white;
-  border-radius: 16px;
+  background: #FFDFB6;
+  border-radius: 24px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   padding: 48px 40px;
   width: 100%;
@@ -34,11 +34,13 @@
 
 .auth-container h1 {
   text-align: center;
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 600;
-  color: #333;
+  color: #813405;
   margin-bottom: 32px;
   margin-top: 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .error-message {
@@ -66,9 +68,9 @@
 }
 
 .form-group label {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
-  color: #333;
+  color: #813405;
 }
 
 .form-group input,
@@ -93,9 +95,32 @@
   min-height: 80px;
 }
 
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  margin-top: -8px;
+}
+
+.checkbox-group input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #813405;
+}
+
+.checkbox-group label {
+  font-size: 14px;
+  font-weight: 400;
+  color: #813405;
+  cursor: pointer;
+  margin: 0;
+}
+
 .auth-submit-btn {
   padding: 14px 24px;
-  background-color: #8B5A3C;
+  background-color: #813405;
   color: white;
   border: none;
   border-radius: 8px;
@@ -107,7 +132,7 @@
 }
 
 .auth-submit-btn:hover:not(:disabled) {
-  background-color: #6d4530;
+  background-color: #813405;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(139, 90, 60, 0.3);
 }
@@ -124,7 +149,7 @@
 }
 
 .auth-footer a {
-  color: #8B5A3C;
+  color: #813405;
   text-decoration: none;
   font-weight: 600;
   transition: color 0.2s;
@@ -133,6 +158,108 @@
 .auth-footer a:hover {
   color: #6d4530;
   text-decoration: underline;
+}
+
+/* Estilos de la foto de perfil en registro */
+.profile-photo-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 12px;
+  margin-bottom: 16px;
+}
+
+.profile-photo-section > label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #813405;
+}
+
+.profile-photo-container {
+  display: flex;
+  justify-content: center;
+  padding: 12px 0;
+}
+
+.profile-photo-preview {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #813405;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profile-photo-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.photo-upload-btn,
+.photo-remove-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.photo-upload-btn {
+  background-color: #813405;
+  color: white;
+}
+
+.photo-upload-btn:hover {
+  background-color: #6d4530;
+  transform: translateY(-2px);
+}
+
+.photo-remove-btn {
+  background-color: #e8d5c4;
+  color: #813405;
+  border: 1px solid #813405;
+}
+
+.photo-remove-btn:hover {
+  background-color: #dcc4b3;
+}
+
+.photo-help-text {
+  font-size: 12px;
+  color: #666;
+  margin: 0;
+  text-align: center;
+}
+
+.auth-form-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.auth-signup-btn {
+  padding: 14px 24px;
+  background-color: transparent;
+  color: #813405;
+  border: 2px solid #813405;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.auth-signup-btn:hover {
+  background-color: #813405;
+  color: white;
 }
 
 @media (max-width: 480px) {

@@ -6,6 +6,7 @@ export default function Login() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -47,6 +48,13 @@ export default function Login() {
       // Guardar el ID del usuario en localStorage
       localStorage.setItem('usuarioId', usuario._id);
       localStorage.setItem('username', usuario.username);
+      
+      // Guardar credenciales si "Recuérdarme" está activado
+      if (rememberMe) {
+        localStorage.setItem('rememberedEmail', formData.email);
+      } else {
+        localStorage.removeItem('rememberedEmail');
+      }
 
       // Redirigir al perfil
       navigate('/perfil');
@@ -67,7 +75,7 @@ export default function Login() {
         
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="form-group">
-            <label htmlFor="email">Email</label>
+            <label htmlFor="email">Correo Electrónico</label>
             <input
               type="email"
               id="email"
@@ -90,6 +98,16 @@ export default function Login() {
               placeholder="Tu contraseña"
               required
             />
+          </div>
+
+          <div className="checkbox-group">
+            <input
+              type="checkbox"
+              id="rememberMe"
+              checked={rememberMe}
+              onChange={(e) => setRememberMe(e.target.checked)}
+            />
+            <label htmlFor="rememberMe">Recuérdarme</label>
           </div>
 
           <button type="submit" className="auth-submit-btn" disabled={loading}>

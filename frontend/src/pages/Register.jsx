@@ -6,6 +6,8 @@ export default function Register() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [fotoPerfil, setFotoPerfil] = useState(null);
+  const [fotoPerfilPreview, setFotoPerfilPreview] = useState('https://res.cloudinary.com/skala/image/upload/v1777538122/foto_perfil_bmu1ge.jpg');
   const [formData, setFormData] = useState({
     nombreCompleto: '',
     username: '',
@@ -21,6 +23,38 @@ export default function Register() {
       ...prev,
       [name]: value
     }));
+  };
+
+  const handleProfilePhotoChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Validar que sea una imagen
+      if (!file.type.startsWith('image/')) {
+        setError('Por favor sube un archivo de imagen válido');
+        return;
+      }
+      
+      // Validar tamaño (máx 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        setError('La imagen no debe pesar más de 5MB');
+        return;
+      }
+
+      setFotoPerfil(file);
+      
+      // Crear preview
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFotoPerfilPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+      setError('');
+    }
+  };
+
+  const handleRemovePhoto = () => {
+    setFotoPerfil(null);
+    setFotoPerfilPreview('https://res.cloudinary.com/skala/image/upload/v1777538122/foto_perfil_bmu1ge.jpg');
   };
 
   const handleSubmit = async (e) => {
@@ -39,6 +73,19 @@ export default function Register() {
 
     setLoading(true);
     try {
+      let fotoPerfilBase64 = 'https://res.cloudinary.com/skala/image/upload/v1777538122/foto_perfil_bmu1ge.jpg';
+      
+      // Si hay foto seleccionada, convertir a base64
+      if (fotoPerfil) {
+        const reader = new FileReader();
+        const fotoPromise = new Promise((resolve, reject) => {
+          reader.onloadend = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(fotoPerfil);
+        });
+        fotoPerfilBase64 = await fotoPromise;
+      }
+
       const response = await fetch('http://localhost:5000/api/usuarios', {
         method: 'POST',
         headers: {
@@ -50,7 +97,7 @@ export default function Register() {
           email: formData.email,
           password: formData.password,
           bio: formData.bio,
-          fotoPerfil: '',
+          fotoPerfil: fotoPerfilBase64,
         }),
       });
 
@@ -158,6 +205,39 @@ export default function Register() {
               placeholder="Cuéntanos sobre ti"
               rows="3"
             />
+          </div>
+
+          <div className="profile-photo-section">
+            <label>Foto de Perfil</label>
+            <div className="profile-photo-container">
+              <img 
+                src={fotoPerfilPreview} 
+                alt="Foto de perfil preview" 
+                className="profile-photo-preview"
+              />
+            </div>
+            <div className="profile-photo-buttons">
+              <label htmlFor="photoinput" className="photo-upload-btn">
+                {fotoPerfil ? 'Cambiar foto' : 'Subir foto'}
+              </label>
+              <input
+                type="file"
+                id="photoinput"
+                accept="image/*"
+                onChange={handleProfilePhotoChange}
+                style={{ display: 'none' }}
+              />
+              {fotoPerfil && (
+                <button 
+                  type="button"
+                  className="photo-remove-btn"
+                  onClick={handleRemovePhoto}
+                >
+                  Eliminar foto
+                </button>
+              )}
+            </div>
+            <p className="photo-help-text">Sube una imagen JPG, PNG o GIF (máx 5MB)</p>
           </div>
 
           <div className="auth-form-buttons">
