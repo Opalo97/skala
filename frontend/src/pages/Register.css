@@ -160,6 +160,108 @@
   text-decoration: underline;
 }
 
+/* Estilos de la foto de perfil en registro */
+.profile-photo-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 12px;
+  margin-bottom: 16px;
+}
+
+.profile-photo-section > label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #813405;
+}
+
+.profile-photo-container {
+  display: flex;
+  justify-content: center;
+  padding: 12px 0;
+}
+
+.profile-photo-preview {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #813405;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profile-photo-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.photo-upload-btn,
+.photo-remove-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.photo-upload-btn {
+  background-color: #813405;
+  color: white;
+}
+
+.photo-upload-btn:hover {
+  background-color: #6d4530;
+  transform: translateY(-2px);
+}
+
+.photo-remove-btn {
+  background-color: #e8d5c4;
+  color: #813405;
+  border: 1px solid #813405;
+}
+
+.photo-remove-btn:hover {
+  background-color: #dcc4b3;
+}
+
+.photo-help-text {
+  font-size: 12px;
+  color: #666;
+  margin: 0;
+  text-align: center;
+}
+
+.auth-form-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.auth-signup-btn {
+  padding: 14px 24px;
+  background-color: transparent;
+  color: #813405;
+  border: 2px solid #813405;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.auth-signup-btn:hover {
+  background-color: #813405;
+  color: white;
+}
+
 @media (max-width: 480px) {
   .auth-page {
     padding: 30px 15px;
@@ -185,4 +287,3 @@
     font-size: 14px;
   }
 }
-

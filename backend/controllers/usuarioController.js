@@ -20,8 +20,25 @@ const obtenerUsuarios = async (req, res) => {
 // Acción: Crear un nuevo usuario (Registro)
 const crearUsuario = async (req, res) => {
     try {
+        // Determinar la URL de la foto de perfil de forma robusta
+        const defaultFoto = 'https://res.cloudinary.com/skala/image/upload/v1777538122/foto_perfil_bmu1ge.jpg';
+        let fotoPerfil = defaultFoto;
+
+        // Multer + Cloudinary puede aportar distintos campos según la versión
+        if (req.file) {
+            fotoPerfil = req.file.secure_url || req.file.path || req.file.url || req.file.public_id || fotoPerfil;
+        }
+
+        // Si por algún motivo el cliente envió fotoPerfil en el body (string URL), priorizarla
+        if (!req.file && req.body && typeof req.body.fotoPerfil === 'string' && req.body.fotoPerfil.trim().length > 0) {
+            fotoPerfil = req.body.fotoPerfil.trim();
+        }
+
         // En un proyecto real aquí deberíamos hashear la contraseña antes de guardar
-        const nuevoUsuario = await Usuario.create(req.body);
+        const nuevoUsuario = await Usuario.create({
+            ...req.body,
+            fotoPerfil: fotoPerfil,
+        });
         res.status(201).json(nuevoUsuario);
     } catch (error) {
         res.status(400).json({ mensaje: 'Error al crear el usuario', error });
@@ -93,9 +110,40 @@ const eliminarUsuario = async (req, res) => {
     }
 };
 
+// Acción: Actualizar foto de perfil
+const actualizarFotoPerfil = async (req, res) => {
+    try {
+        const usuarioId = req.params.id;
+        
+        if (!req.file) {
+            return res.status(400).json({ mensaje: 'No se proporcionó ningún archivo' });
+        }
+
+        const nuevaUrl = req.file.secure_url || req.file.path || req.file.url || null;
+        if (!nuevaUrl) {
+            return res.status(500).json({ mensaje: 'No se pudo obtener la URL pública de la imagen subida' });
+        }
+
+        const usuario = await Usuario.findByIdAndUpdate(
+            usuarioId,
+            { fotoPerfil: nuevaUrl },
+            { new: true }
+        );
+
+        if (!usuario) {
+            return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+        }
+
+        res.status(200).json(usuario);
+    } catch (error) {
+        res.status(500).json({ mensaje: 'Error al actualizar la foto de perfil', error });
+    }
+};
+
 module.exports = {
     obtenerUsuarios,
     crearUsuario,
     obtenerUsuarioPorId,
-    eliminarUsuario
+    eliminarUsuario,
+    actualizarFotoPerfil
 };

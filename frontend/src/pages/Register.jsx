@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Login.css';
+import './Register.css';
 
 export default function Register() {
   const navigate = useNavigate();
@@ -73,32 +73,23 @@ export default function Register() {
 
     setLoading(true);
     try {
-      let fotoPerfilBase64 = 'https://res.cloudinary.com/skala/image/upload/v1777538122/foto_perfil_bmu1ge.jpg';
+      // Crear FormData para enviar el archivo
+      const form = new FormData();
+      form.append('nombreCompleto', formData.nombreCompleto);
+      form.append('username', formData.username);
+      form.append('email', formData.email);
+      form.append('password', formData.password);
+      form.append('bio', formData.bio);
       
-      // Si hay foto seleccionada, convertir a base64
+      // Añadir la foto solo si el usuario la cambió
       if (fotoPerfil) {
-        const reader = new FileReader();
-        const fotoPromise = new Promise((resolve, reject) => {
-          reader.onloadend = () => resolve(reader.result);
-          reader.onerror = reject;
-          reader.readAsDataURL(fotoPerfil);
-        });
-        fotoPerfilBase64 = await fotoPromise;
+        form.append('fotoPerfil', fotoPerfil);
       }
 
       const response = await fetch('http://localhost:5000/api/usuarios', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          nombreCompleto: formData.nombreCompleto,
-          username: formData.username,
-          email: formData.email,
-          password: formData.password,
-          bio: formData.bio,
-          fotoPerfil: fotoPerfilBase64,
-        }),
+        body: form,
+        // No establecer Content-Type, se establece automáticamente con FormData
       });
 
       if (!response.ok) {
