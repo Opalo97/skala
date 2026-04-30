@@ -17,6 +17,8 @@ import Buscar from './pages/Buscar'
 import Perfil from './pages/Perfil'
 import Guardados from './pages/Guardados'
 import Filtros from './pages/Filtros'
+import CrearInspiracion from './pages/CrearInspiracion'
+
 
 function App() {
   return (
@@ -28,6 +30,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/upload" element={<UploadItem />} />
+          <Route path="/crear-inspiracion" element={<CrearInspiracion />} />
           <Route path="/item/:id" element={<ItemDetail />} />
           <Route path="/inspiracion/:id" element={<InspiracionDetail />} />
           <Route path="/buscar" element={<Buscar />} />

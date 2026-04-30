@@ -1,0 +1,162 @@
+.crear-insp-container {
+  padding: 40px;
+  background-color: #fdf5e6; /* Beige de fondo */
+  min-height: 100vh;
+}
+
+.insp-title {
+  font-size: 42px;
+  font-weight: 800;
+  margin-bottom: 40px;
+  color: #1a1a1a;
+}
+
+.insp-form {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  max-width: 800px;
+}
+
+/* Multimedia Box */
+.media-section label {
+  display: block;
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.upload-box {
+  width: 100%;
+  height: 200px;
+  border: 2px solid #333;
+  border-radius: 20px;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.upload-box input {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.upload-placeholder {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  color: #666;
+}
+
+.plus-circle {
+  width: 40px;
+  height: 40px;
+  border: 2px solid #666;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.preview-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.btn-gallery {
+  margin-top: 15px;
+  background-color: #fbd4b4; /* Naranja suave */
+  border: none;
+  padding: 8px 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Campos de entrada */
+.input-group {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  margin-bottom: 20px;
+}
+
+.input-group label {
+  width: 250px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.input-group input {
+  flex-grow: 1;
+  padding: 12px 20px;
+  border-radius: 12px;
+  border: none;
+  background-color: #fbd4b4; /* Color melocotón de tu captura */
+  font-size: 16px;
+  color: #333;
+}
+
+.input-group input::placeholder {
+  color: #999;
+}
+
+/* Añadir Mueble */
+.add-mueble-section {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.add-mueble-section label {
+  width: 250px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.btn-add-mueble {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border: 2px solid #1a1a1a;
+  background: transparent;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* Footer Botones */
+.form-footer {
+  display: flex;
+  gap: 30px;
+  margin-top: 20px;
+}
+
+.btn-cancel {
+  background: transparent;
+  border: 2px solid #fbd4b4;
+  padding: 12px 40px;
+  border-radius: 30px;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.btn-save {
+  background-color: #fbd4b4;
+  border: none;
+  padding: 12px 60px;
+  border-radius: 30px;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(251, 212, 180, 0.4);
+}

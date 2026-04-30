@@ -43,3 +43,27 @@
   padding: 0;
   font-family: inherit;
 }
+
+/* Estilo específico para el botón de crear */
+.sidebar-item[onclick*="create"],
+.sidebar-item:has(+ .create-modal) {
+  /* Este selector se aplicará al botón de crear */
+}
+
+/* Mejor: usar clase específica para el botón de crear */
+.create-btn {
+  background-color: #f5e6d0;  /* Fondo de la sidebar */
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font-family: inherit;
+  color: #813405;
+}
+
+.create-btn:hover {
+  background-color: #e8d5b7;  /* Color marrón oscuro al hover */
+  color: #813405;             /* Texto claro para contraste */
+  transform: scale(1.05);     /* Efecto visual adicional */
+  
+}
+

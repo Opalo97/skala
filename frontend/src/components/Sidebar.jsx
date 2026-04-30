@@ -3,11 +3,12 @@ import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { BiHome, BiSearch, BiPlus, BiUser, BiHeart, BiSliderAlt } from "react-icons/bi";
 import "./Sidebar.css";
 import AuthModal from "./AuthModal";
+import CreateModal from "./CreateModal";
 
 const navItems = [
   { to: "/", label: "Inicio", Icon: BiHome },
   { to: "/buscar", label: "Buscar", Icon: BiSearch },
-  { to: "/upload", label: "Subir", Icon: BiPlus },
+  { type: "create", label: "Crear", Icon: BiPlus },
   { type: "user", label: "Perfil", Icon: BiUser },
   { to: "/guardados", label: "Guardados", Icon: BiHeart },
   { to: "/filtros", label: "Filtros", Icon: BiSliderAlt },
@@ -15,6 +16,7 @@ const navItems = [
 
 export default function Sidebar() {
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [showCreateModal, setShowCreateModal] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -35,6 +37,14 @@ export default function Sidebar() {
     }
   };
 
+  const handleCreateClick = () => {
+    if (isUserLoggedIn()) {
+      setShowCreateModal(true);
+    } else {
+      setShowAuthModal(true);
+    }
+  };
+
   return (
     <>
       <nav className="sidebar">
@@ -45,6 +55,19 @@ export default function Sidebar() {
                 key="user"
                 className={`sidebar-item user-btn ${isUserIconActive() ? "active" : ""}`}
                 onClick={handleUserIconClick}
+                title={item.label}
+              >
+                <item.Icon size={28} />
+              </button>
+            );
+          }
+
+          if (item.type === "create") {
+            return (
+              <button
+                key="create"
+                className="create-btn"
+                onClick={handleCreateClick}
                 title={item.label}
               >
                 <item.Icon size={28} />
@@ -71,6 +94,7 @@ export default function Sidebar() {
       </nav>
 
       <AuthModal isOpen={showAuthModal} onClose={() => setShowAuthModal(false)} />
+      <CreateModal isOpen={showCreateModal} onClose={() => setShowCreateModal(false)} />
     </>
   );
 }
