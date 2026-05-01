@@ -2,6 +2,8 @@ const Inspiracion = require('../models/Inspiracion');
 const Coleccion = require('../models/Coleccion');
 const Comentario = require('../models/Comentario');
 const Usuario = require('../models/Usuarios'); // <-- Añade esto para limpiar favoritos
+const cloudinary = require('cloudinary').v2;
+const { Readable } = require('stream');
 
 // Acción: Obtener todas las inspiraciones (GET)
 const obtenerInspiraciones = async (req, res) => {
@@ -19,11 +21,60 @@ const obtenerInspiraciones = async (req, res) => {
 // Acción: Crear una nueva inspiración (POST)
 const crearInspiracion = async (req, res) => {
     try {
-        // req.body contiene los datos que el usuario mandó desde el frontend
-        const nuevaInspiracion = await Inspiracion.create(req.body);
+        // Manejo de archivos desde req.files (multer memoryStorage)
+        const files = req.files || [];
+
+        const uploadBuffer = (buffer, options) => {
+            return new Promise((resolve, reject) => {
+                const uploadStream = cloudinary.uploader.upload_stream(options, (error, result) => {
+                    if (error) return reject(error);
+                    resolve(result);
+                });
+                const readable = new Readable();
+                readable._read = () => {};
+                readable.push(buffer);
+                readable.push(null);
+                readable.pipe(uploadStream);
+            });
+        };
+
+        const imagenes = [];
+        const videos = [];
+
+        for (const f of files) {
+            const isImage = f.mimetype.startsWith('image/');
+            const isVideo = f.mimetype.startsWith('video/');
+            const options = { folder: 'skala/inspiraciones' };
+            if (isImage) options.resource_type = 'image';
+            else if (isVideo) options.resource_type = 'video';
+            else options.resource_type = 'raw';
+
+            const resUp = await uploadBuffer(f.buffer, options);
+            if (isImage) imagenes.push(resUp.secure_url);
+            else if (isVideo) videos.push(resUp.secure_url);
+        }
+
+        // Procesar cuerpo
+        const body = req.body || {};
+        let muebles = body.muebles || [];
+        if (typeof muebles === 'string') {
+            try { muebles = JSON.parse(muebles); } catch (e) { /* ignore */ }
+        }
+
+        const nuevaInspiracionData = {
+            nombre: body.nombre,
+            zonaCasa: body.zonaCasa,
+            categoriaDecoracion: body.categoriaDecoracion,
+            multimedia: { imagenes, videos },
+            productos: muebles,
+            autor: body.autor
+        };
+
+        const nuevaInspiracion = await Inspiracion.create(nuevaInspiracionData);
         res.status(201).json(nuevaInspiracion);
     } catch (error) {
-        res.status(400).json({ mensaje: 'Error al crear la inspiración', error });
+        console.error('Error crearInspiracion:', error);
+        res.status(400).json({ mensaje: 'Error al crear la inspiración', error: error.message || error });
     }
 };
 

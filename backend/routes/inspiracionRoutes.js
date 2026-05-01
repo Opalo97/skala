@@ -1,13 +1,15 @@
 const express = require('express');
 const router = express.Router();
+const multer = require('multer');
 const inspiracionController = require('../controllers/inspiracionController');
+
+const upload = multer({ storage: multer.memoryStorage() });
 
 // Si piden un GET a '/', el controlador se encarga de buscar y devolver
 router.get('/', inspiracionController.obtenerInspiraciones);
 
-// Si piden un POST a '/', el controlador se encarga de crear
-router.post('/', inspiracionController.crearInspiracion);
-// Añade esta línea debajo de tu router.get y router.post
+// POST acepta archivos en 'multimedia' (varios)
+router.post('/', upload.array('multimedia', 20), inspiracionController.crearInspiracion);
 router.delete('/:id', inspiracionController.eliminarInspiracion);
 
 module.exports = router;

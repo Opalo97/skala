@@ -72,6 +72,155 @@
   object-fit: cover;
 }
 
+/* Media gallery styles (horizontal slider like CrearProducto) */
+.media-gallery.horizontal-scroll {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding: 12px;
+  align-items: center;
+}
+
+.media-item-container {
+  position: relative;
+  width: 140px;
+  min-width: 140px;
+  height: 100px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.media-thumbnail {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.media-item .media-placeholder {
+  font-size: 28px;
+}
+
+.media-delete {
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #6b3b24; /* marrón */
+  color: #fff;
+  border: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+/* Botón subir más */
+.upload-more {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 10px;
+}
+
+.btn-subir-mas {
+  background: #6b3b24;
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(107,59,36,0.18);
+}
+
+/* Selected muebles list */
+.selected-muebles {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-left: 10px;
+}
+
+.mueble-item {
+  width: 140px;
+  border-radius: 8px;
+  background: #fff;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.mueble-thumb {
+  width: 100%;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.mueble-info { text-align: center; font-size: 13px; }
+.mueble-nombre { font-weight: 700; }
+.mueble-vendedor { color: #666; font-size: 12px; }
+.mueble-delete {
+  background: transparent;
+  border: none;
+  color: #6b3b24;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+/* Modal styles */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 60;
+}
+
+.modal-box {
+  width: min(920px, 95%);
+  max-height: 80vh;
+  background: #fff;
+  border-radius: 12px;
+  padding: 18px;
+  overflow: auto;
+}
+
+.modal-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+.modal-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.product-card {
+  border-radius: 10px;
+  padding: 8px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  align-items:center;
+  background:#fafafa;
+}
+.product-thumb { width:100%; height:120px; object-fit:cover; border-radius:6px; }
+.product-name { font-weight:700; text-align:center; }
+.product-vendor { color:#666; font-size:13px; }
+.product-add-btn { background:#6b3b24; color:#fff; border:none; padding:6px 10px; border-radius:8px; cursor:pointer; }
+
+
 
 
 /* Campos de entrada */
