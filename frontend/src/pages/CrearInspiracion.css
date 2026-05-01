@@ -72,15 +72,7 @@
   object-fit: cover;
 }
 
-.btn-gallery {
-  margin-top: 15px;
-  background-color: #fbd4b4; /* Naranja suave */
-  border: none;
-  padding: 8px 20px;
-  border-radius: 10px;
-  font-weight: 600;
-  cursor: pointer;
-}
+
 
 /* Campos de entrada */
 .input-group {

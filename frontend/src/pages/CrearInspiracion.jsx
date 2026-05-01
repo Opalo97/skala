@@ -87,7 +87,7 @@ export default function CrearInspiracion() {
             )}
             <input type="file" onChange={handleFileChange} accept="image/*" />
           </div>
-          <button type="button" className="btn-gallery">Subir desde galería</button>
+
         </div>
 
         {/* CAMPOS DE TEXTO */}

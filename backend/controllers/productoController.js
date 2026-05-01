@@ -2,6 +2,8 @@ const Producto = require('../models/Producto');
 const Inspiracion = require('../models/Inspiracion'); // <-- Añade esto
 const Lista = require('../models/Lista'); // <-- Añade esto
 const Usuario = require('../models/Usuarios'); // <-- Añade esto para limpiar favoritos
+const cloudinary = require('cloudinary').v2;
+const { Readable } = require('stream');
 // Acción: Obtener todos los productos
 const obtenerProductos = async (req, res) => {
     try {
@@ -26,11 +28,69 @@ const crearProducto = async (req, res) => {
             return res.status(400).json({ mensaje: 'El nombre del producto es requerido' });
         }
 
-        const nuevoProducto = await Producto.create(req.body);
+        // Manejo de archivos enviados por multipart/form-data (multer los pone en req.files)
+        const files = req.files || {};
+        const fotosFiles = files.fotos || [];
+        const videosFiles = files.videos || [];
+        const modeloFiles = files.modelo || [];
 
-        // Populate el usuario que lo creó para obtener más información
+        // Helper para subir buffers a Cloudinary
+        const uploadBuffer = (buffer, options) => {
+            return new Promise((resolve, reject) => {
+                const uploadStream = cloudinary.uploader.upload_stream(options, (error, result) => {
+                    if (error) return reject(error);
+                    resolve(result);
+                });
+                const readable = new Readable();
+                readable._read = () => {};
+                readable.push(buffer);
+                readable.push(null);
+                readable.pipe(uploadStream);
+            });
+        };
+
+        // Subir fotos
+        const imagenes = [];
+        for (const f of fotosFiles) {
+            const resUp = await uploadBuffer(f.buffer, { folder: 'skala/muebles', resource_type: 'image' });
+            imagenes.push(resUp.secure_url);
+        }
+
+        // Subir videos
+        const videos = [];
+        for (const v of videosFiles) {
+            const resUp = await uploadBuffer(v.buffer, { folder: 'skala/muebles', resource_type: 'video' });
+            videos.push(resUp.secure_url);
+        }
+
+        // Subir modelo 3D (raw)
+        let modelo3dUrl = '';
+        if (modeloFiles.length > 0) {
+            const m = modeloFiles[0];
+            const resUp = await uploadBuffer(m.buffer, { folder: 'skala/muebles', resource_type: 'raw' });
+            modelo3dUrl = resUp.secure_url;
+        }
+
+        // Procesar especificaciones si vienen como string
+        let especificaciones = req.body.especificaciones || {};
+        if (typeof especificaciones === 'string') {
+            try { especificaciones = JSON.parse(especificaciones); } catch (e) { /* ignore */ }
+        }
+
+        const nuevoProductoData = {
+            nombre: req.body.nombre,
+            linkCompra: req.body.linkCompra || '',
+            precio: parseFloat(req.body.precio) || 0,
+            vendedor: req.body.vendedor || '',
+            especificaciones,
+            imagenes,
+            videos,
+            modelo3d: modelo3dUrl,
+            subidoPor: req.body.subidoPor
+        };
+
+        const nuevoProducto = await Producto.create(nuevoProductoData);
         await nuevoProducto.populate('subidoPor', 'username nombreCompleto');
-
         res.status(201).json(nuevoProducto);
     } catch (error) {
         res.status(400).json({ mensaje: 'Error al crear el producto', error: error.message });

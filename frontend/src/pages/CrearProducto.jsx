@@ -116,33 +116,7 @@ function CrearProducto() {
         }
     };
 
-    // Subir a Cloudinary
-    const subirACloudinary = async (archivo, fileType) => {
-        const formData = new FormData();
-        formData.append('file', archivo);
-        formData.append('upload_preset', UPLOAD_PRESET);
-        formData.append('folder', FOLDER);
-
-        try {
-            let url = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}`;
-
-            if (fileType === 'video') {
-                url += '/video/upload';
-            } else if (fileType === 'modelo') {
-                url += '/raw/upload';
-            } else {
-                url += '/image/upload';
-            }
-
-            const response = await axios.post(url, formData, {
-                headers: { 'Content-Type': 'multipart/form-data' }
-            });
-            return response.data.secure_url;
-        } catch (err) {
-            console.error("Error subiendo a Cloudinary:", err);
-            throw new Error(`Error al subir ${fileType}`);
-        }
-    };
+    // NOTE: Ahora subimos archivos al backend, que a su vez los enviará a Cloudinary.
 
     // Submit
     const handleSubmit = async (e) => {
@@ -157,22 +131,6 @@ function CrearProducto() {
                 return;
             }
 
-            const urlsFotos = await Promise.all(
-                fotos.map(f => subirACloudinary(f.archivo, 'foto'))
-            );
-
-            let urlsVideos = [];
-            if (videos.length > 0) {
-                urlsVideos = await Promise.all(
-                    videos.map(v => subirACloudinary(v.archivo, 'video'))
-                );
-            }
-
-            let urlModelo3d = '';
-            if (modelo3d.length > 0) {
-                urlModelo3d = await subirACloudinary(modelo3d[0].archivo, 'modelo');
-            }
-
             const usuarioId = localStorage.getItem('usuarioId');
             if (!usuarioId) {
                 setError('Debes estar autenticado para crear un producto.');
@@ -180,19 +138,20 @@ function CrearProducto() {
                 return;
             }
 
-            const nuevoProducto = {
-                nombre,
-                linkCompra,
-                precio: parseFloat(precio) || 0,
-                vendedor,
-                especificaciones,
-                imagenes: urlsFotos,
-                videos: urlsVideos,
-                modelo3d: urlModelo3d,
-                subidoPor: usuarioId
-            };
+            // Construir FormData para enviar al backend (incluye archivos)
+            const formData = new FormData();
+            formData.append('nombre', nombre);
+            formData.append('linkCompra', linkCompra);
+            formData.append('precio', parseFloat(precio) || 0);
+            formData.append('vendedor', vendedor);
+            formData.append('especificaciones', JSON.stringify(especificaciones));
+            formData.append('subidoPor', usuarioId);
 
-            await axios.post('http://localhost:5000/api/productos', nuevoProducto, {
+            fotos.forEach(f => formData.append('fotos', f.archivo));
+            videos.forEach(v => formData.append('videos', v.archivo));
+            if (modelo3d.length > 0) formData.append('modelo', modelo3d[0].archivo);
+
+            await axios.post('http://localhost:5000/api/productos', formData, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
