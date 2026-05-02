@@ -42,7 +42,14 @@ export default function InspiracionDetail() {
       {inspiracion.productos && inspiracion.productos.length > 0 && (
         <div className="productos">
           <h2>Productos relacionados</h2>
-          {/* Mostrar productos */}
+          <div style={{display: 'flex', gap: '10px'}}>
+            {inspiracion.productos.map((prod) => (
+              <div key={prod._id || prod}>
+                {/* Asumimos que prod es un objeto poblado, si es solo ID se usaría otra lógica o se debe hacer populate en backend */}
+                <button onClick={() => navigate(`/item/${prod._id || prod}`)}>Ver Producto</button>
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </div>

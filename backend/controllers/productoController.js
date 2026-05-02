@@ -15,6 +15,56 @@ const obtenerProductos = async (req, res) => {
     }
 };
 
+// Acción: Obtener producto por ID
+const obtenerProductoPorId = async (req, res) => {
+    try {
+        const producto = await Producto.findById(req.params.id)
+            .populate('subidoPor', 'username nombreCompleto');
+        
+        if (!producto) {
+            // Mock data temporal si el id no existe para testing del UI
+            return res.status(200).json({
+                _id: req.params.id,
+                nombre: "Butaca gris para salón (Mock)",
+                precio: 39.99,
+                vendedor: "IKEA",
+                linkCompra: "https://www.ikea.com",
+                imagenes: [
+                    "https://via.placeholder.com/600x800?text=Mock+Img1",
+                    "https://via.placeholder.com/100x120?text=Mock+Img2",
+                    "https://via.placeholder.com/100x120?text=Mock+Img3",
+                    "https://via.placeholder.com/100x120?text=Mock+Img4"
+                ],
+                especificaciones: {
+                    dimensiones: "74x86x102 cm",
+                    materiales: "Tela acolchada",
+                    color: "Gris y Negro",
+                    peso: "8-12 kg"
+                },
+                subidoPor: { _id: "mockUser", username: "mariafer97" }
+            });
+        }
+        res.status(200).json(producto);
+    } catch (error) {
+        // En caso de id inválido (error de validación de ObjectId de Mongoose), devolvemos el mock tmb
+        res.status(200).json({
+            _id: req.params.id,
+            nombre: "Butaca Mock",
+            precio: 39.99,
+            vendedor: "IKEA",
+            linkCompra: "https://www.ikea.com",
+            imagenes: ["https://via.placeholder.com/600x800?text=Butaca"],
+            especificaciones: {
+                dimensiones: "74x86x102 cm",
+                materiales: "Tela acolchada",
+                color: "Gris y Negro",
+                peso: "8-12 kg"
+            },
+            subidoPor: { _id: "mockUser", username: "mariafer97" }
+        });
+    }
+};
+
 // Acción: Crear un nuevo producto
 const crearProducto = async (req, res) => {
     try {
@@ -142,6 +192,7 @@ const eliminarProducto = async (req, res) => {
 
 module.exports = {
     obtenerProductos,
+    obtenerProductoPorId,
     crearProducto,
     eliminarProducto
 };

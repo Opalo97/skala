@@ -7,6 +7,7 @@ const productoController = require('../controllers/productoController');
 const upload = multer({ storage: multer.memoryStorage() });
 
 router.get('/', productoController.obtenerProductos);
+router.get('/:id', productoController.obtenerProductoPorId);
 // Recibe campos y archivos: fotos (max 5), videos (max 3), modelo (max 1)
 router.post('/', upload.fields([
 	{ name: 'fotos', maxCount: 5 },
