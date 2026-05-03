@@ -165,11 +165,63 @@ const actualizarFotoPerfil = async (req, res) => {
     }
 };
 
+// Acción: Añadir o quitar una inspiración de los favoritos del usuario
+const toggleFavoritoInspiracion = async (req, res) => {
+    try {
+        const usuarioId = req.params.id;
+        const { inspiracionId } = req.body;
+
+        if (!inspiracionId) return res.status(400).json({ mensaje: 'Falta inspiracionId' });
+
+        const usuario = await Usuario.findById(usuarioId);
+        if (!usuario) return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+
+        const yaEsFavorito = usuario.favoritosInspiraciones.map(String).includes(String(inspiracionId));
+
+        if (yaEsFavorito) {
+            await Usuario.findByIdAndUpdate(usuarioId, { $pull: { favoritosInspiraciones: inspiracionId } });
+        } else {
+            await Usuario.findByIdAndUpdate(usuarioId, { $addToSet: { favoritosInspiraciones: inspiracionId } });
+        }
+
+        res.status(200).json({ favorito: !yaEsFavorito });
+    } catch (error) {
+        res.status(500).json({ mensaje: 'Error al actualizar favorito', error });
+    }
+};
+
+// Acción: Añadir o quitar un producto de los favoritos del usuario
+const toggleFavoritoProducto = async (req, res) => {
+    try {
+        const usuarioId = req.params.id;
+        const { productoId } = req.body;
+
+        if (!productoId) return res.status(400).json({ mensaje: 'Falta productoId' });
+
+        const usuario = await Usuario.findById(usuarioId);
+        if (!usuario) return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+
+        const yaEsFavorito = usuario.favoritosProductos.map(String).includes(String(productoId));
+
+        if (yaEsFavorito) {
+            await Usuario.findByIdAndUpdate(usuarioId, { $pull: { favoritosProductos: productoId } });
+        } else {
+            await Usuario.findByIdAndUpdate(usuarioId, { $addToSet: { favoritosProductos: productoId } });
+        }
+
+        res.status(200).json({ favorito: !yaEsFavorito });
+    } catch (error) {
+        res.status(500).json({ mensaje: 'Error al actualizar favorito', error });
+    }
+};
+
 module.exports = {
     obtenerUsuarios,
     crearUsuario,
     obtenerUsuarioPorId,
     eliminarUsuario,
     actualizarFotoPerfil,
-    actualizarUsuario
+    actualizarUsuario,
+    toggleFavoritoProducto,
+    toggleFavoritoInspiracion
 };

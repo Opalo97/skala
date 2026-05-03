@@ -5,6 +5,19 @@ const Usuario = require('../models/Usuarios'); // <-- Añade esto para limpiar f
 const cloudinary = require('cloudinary').v2;
 const { Readable } = require('stream');
 
+// Acción: Obtener una inspiración por ID
+const obtenerInspiracionPorId = async (req, res) => {
+    try {
+        const inspiracion = await Inspiracion.findById(req.params.id)
+            .populate('autor', 'username fotoPerfil')
+            .populate('productos');
+        if (!inspiracion) return res.status(404).json({ mensaje: 'Inspiración no encontrada' });
+        res.status(200).json(inspiracion);
+    } catch (error) {
+        res.status(500).json({ mensaje: 'Error al obtener la inspiración', error });
+    }
+};
+
 // Acción: Obtener todas las inspiraciones (GET)
 const obtenerInspiraciones = async (req, res) => {
     try {
@@ -130,10 +143,24 @@ const obtenerInspiracionesUsuario = async (req, res) => {
     }
 };
 
+// Acción: Obtener inspiraciones que contienen un producto concreto
+const obtenerInspiracionesPorProducto = async (req, res) => {
+    try {
+        const productoId = req.params.id;
+        const inspiraciones = await Inspiracion.find({ productos: productoId })
+            .populate('autor', 'username fotoPerfil');
+        res.status(200).json(inspiraciones);
+    } catch (error) {
+        res.status(500).json({ mensaje: 'Error al obtener las inspiraciones del producto', error });
+    }
+};
+
 // Exportamos las funciones para que las rutas las puedan usar
 module.exports = {
     obtenerInspiraciones,
+    obtenerInspiracionPorId,
     crearInspiracion,
     eliminarInspiracion,
-    obtenerInspiracionesUsuario
+    obtenerInspiracionesUsuario,
+    obtenerInspiracionesPorProducto
 };

@@ -29,5 +29,9 @@ router.put('/:id', usuarioController.actualizarUsuario);
 
 // Actualizar foto de perfil (usa multer + cloudinary)
 router.put('/:id/actualizar-foto', upload.single('fotoPerfil'), usuarioController.actualizarFotoPerfil);
+// Toggle favorito producto
+router.put('/:id/favorito-producto', usuarioController.toggleFavoritoProducto);
+// Toggle favorito inspiración
+router.put('/:id/favorito-inspiracion', usuarioController.toggleFavoritoInspiracion);
 
 module.exports = router;

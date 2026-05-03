@@ -8,20 +8,33 @@ export default function ItemDetail() {
   const { id } = useParams();
   const [producto, setProducto] = useState(null);
   const [cargando, setCargando] = useState(true);
-  const [imagenPrincipal, setImagenPrincipal] = useState("");
+  const [mediaActual, setMediaActual] = useState(null);
+  const [modalGaleriaAbierto, setModalGaleriaAbierto] = useState(false);
   const [esFavorito, setEsFavorito] = useState(false);
+  const [inspiracionesRelacionadas, setInspiracionesRelacionadas] = useState([]);
 
   useEffect(() => {
     const fetchProducto = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/productos/${id}`);
-        const prod = res.data;
-        
+        const usuarioId = localStorage.getItem('usuarioId');
+        const [resProd, resInsp, resUser] = await Promise.all([
+          axios.get(`http://localhost:5000/api/productos/${id}`),
+          axios.get(`http://localhost:5000/api/inspiraciones/producto/${id}`),
+          usuarioId ? axios.get(`http://localhost:5000/api/usuarios/${usuarioId}`) : Promise.resolve(null)
+        ]);
+
+        const prod = resProd.data;
         if (prod) {
           setProducto(prod);
-          if (prod.imagenes && prod.imagenes.length > 0) {
-            setImagenPrincipal(prod.imagenes[0]);
-          }
+          const primerMedia =
+            prod.imagenes?.[0] ? { type: 'image', url: prod.imagenes[0] } :
+            prod.videos?.[0]   ? { type: 'video', url: prod.videos[0] }   :
+            prod.modelo3d       ? { type: 'model', url: prod.modelo3d }    : null;
+          if (primerMedia) setMediaActual(primerMedia);
+        }
+        setInspiracionesRelacionadas(resInsp.data || []);
+        if (resUser?.data?.favoritosProductos) {
+          setEsFavorito(resUser.data.favoritosProductos.map(String).includes(String(id)));
         }
       } catch (error) {
         console.error("Error al cargar producto:", error);
@@ -33,50 +46,95 @@ export default function ItemDetail() {
     fetchProducto();
   }, [id]);
 
-  const toggleFavorito = () => {
-    // Logica local para interactuar con la funcion favorita si existiera,
-    setEsFavorito(!esFavorito);
+  const toggleFavorito = async () => {
+    const usuarioId = localStorage.getItem('usuarioId');
+    if (!usuarioId) return;
+    try {
+      const res = await axios.put(
+        `http://localhost:5000/api/usuarios/${usuarioId}/favorito-producto`,
+        { productoId: id }
+      );
+      setEsFavorito(res.data.favorito);
+    } catch (error) {
+      console.error('Error al actualizar favorito:', error);
+    }
   };
 
-  const handleImagenClick = (img) => {
-    setImagenPrincipal(img);
-  };
-
-  const handleAddThumbnail = () => {
-    // Podría abrir un modal para añadir fotos si el usuario actual es dueño o simplemente un alert por ahora.
-  };
-
-  if (cargando) return <div className="p-10 text-center">Cargando producto...</div>;
+if (cargando) return <div className="p-10 text-center">Cargando producto...</div>;
   if (!producto) return <div className="p-10 text-center">Producto no encontrado</div>;
 
-  const mMockImgs = producto.imagenes?.length > 1 ? producto.imagenes.slice(0, 3) : [
-    "https://via.placeholder.com/100x120?text=IMG1",
-    "https://via.placeholder.com/100x120?text=IMG2"
+  const allMedia = [
+    ...(producto.imagenes || []).map(url => ({ type: 'image', url })),
+    ...(producto.videos   || []).map(url => ({ type: 'video', url })),
+    ...(producto.modelo3d      ? [{ type: 'model', url: producto.modelo3d }] : []),
   ];
-  
-  const mockPrincipal = imagenPrincipal || "https://via.placeholder.com/600x800?text=Butaca";
+  const totalMedia    = allMedia.length;
+  const mostrarColumna = totalMedia > 1;
+  const thumbnails    = allMedia.slice(0, 3);
+  const btnActivo     = totalMedia > 4;
+  const mediaEnMain   = mediaActual || allMedia[0] || { type: 'image', url: '' };
 
   return (
     <div className="item-detail-page">
       <div className="item-detail-container" style={{flexDirection: "column"}}>
         <div style={{display: "flex", gap: "40px"}}>
+          
           {/* Lado Izquierdo: Galería */}
           <div className="gallery-section">
             <div className="main-image-container">
-              <img src={mockPrincipal} alt={producto.nombre} className="main-image" />
+              {mediaEnMain.type === 'image' && (
+                <a href={mediaEnMain.url} target="_blank" rel="noreferrer">
+                  <img src={mediaEnMain.url} alt={producto.nombre} className="main-image" />
+                </a>
+              )}
+              {mediaEnMain.type === 'video' && (
+                <video src={mediaEnMain.url} controls className="main-image main-video" />
+              )}
+              {mediaEnMain.type === 'model' && (
+                <div className="main-image model-placeholder">
+                  <span>Modelo 3D</span>
+                </div>
+              )}
             </div>
-            <div className="thumbnails-column">
-              {mMockImgs.map((imgUrl, i) => (
-                <img
-                  key={i}
-                  src={imgUrl}
-                  alt={`Thumbnail ${i}`}
-                  className={`thumbnail-img ${mockPrincipal === imgUrl ? 'active' : ''}`}
-                  onClick={() => handleImagenClick(imgUrl)}
-                />
-              ))}
-              <button className="add-thumbnail-btn" onClick={handleAddThumbnail}>+</button>
-            </div>
+
+            {mostrarColumna && (
+              <div className="thumbnails-column">
+                {thumbnails.map((media, i) => {
+                  const esActivo = mediaActual?.url === media.url;
+                  if (media.type === 'image') return (
+                    <img
+                      key={i}
+                      src={media.url}
+                      alt={`Vista ${i + 1}`}
+                      className={`thumbnail-img${esActivo ? ' active' : ''}`}
+                      onClick={() => setMediaActual(media)}
+                    />
+                  );
+                  if (media.type === 'video') return (
+                    <video
+                      key={i}
+                      src={media.url}
+                      muted
+                      className={`thumbnail-img${esActivo ? ' active' : ''}`}
+                      onClick={() => setMediaActual(media)}
+                    />
+                  );
+                  if (media.type === 'model') return (
+                    <div
+                      key={i}
+                      className={`thumbnail-img model-thumb${esActivo ? ' active' : ''}`}
+                      onClick={() => setMediaActual(media)}
+                    >3D</div>
+                  );
+                  return null;
+                })}
+                <button
+                  className={`add-thumbnail-btn${btnActivo ? '' : ' disabled'}`}
+                  onClick={btnActivo ? () => setModalGaleriaAbierto(true) : undefined}
+                  disabled={!btnActivo}
+                >+</button>
+              </div>
+            )}
           </div>
 
           {/* Lado Derecho: Detalles */}
@@ -84,7 +142,7 @@ export default function ItemDetail() {
             <div className="info-header">
               <div className="title-price">
                 <h1 className="product-title">{producto.nombre}</h1>
-                <p className="product-price">€{producto.precio}</p>
+                <p className="product-price">{producto.precio}€</p>
               </div>
               <button className="fav-btn" onClick={toggleFavorito}>
                 {esFavorito ? <BiSolidHeart size={28} /> : <BiHeart size={28} />}
@@ -138,19 +196,71 @@ export default function ItemDetail() {
         </div>
 
         {/* Inspiraciones Relacionadas */}
-        <div className="related-inspirations-container">
-          <h2 className="related-title" style={{textAlign: "left"}}>Aparece en estas inspiraciones</h2>
-          <div className="inspirations-grid">
-            <div className="inspiration-card">
-              <img src="https://via.placeholder.com/800x400?text=Inspiracion+1" alt="Insp 1" className="inspiration-img" />
+        {inspiracionesRelacionadas.length > 0 && (
+          <div className="related-inspirations-container">
+            <h2 className="related-title">Aparece en estas inspiraciones</h2>
+            <div className="inspirations-grid">
+              {inspiracionesRelacionadas.map((insp) => (
+                insp.multimedia?.imagenes?.length > 0 && (
+                  <Link
+                    key={insp._id}
+                    to={`/inspiracion/${insp._id}`}
+                    className="inspiration-card"
+                  >
+                    <img
+                      src={insp.multimedia.imagenes[0]}
+                      alt={insp.nombre}
+                      className="inspiration-img"
+                    />
+                  </Link>
+                )
+              ))}
             </div>
-            <div className="inspiration-card">
-              <img src="https://via.placeholder.com/800x400?text=Inspiracion+2" alt="Insp 2" className="inspiration-img" />
+          </div>
+        )}
+
+      </div>
+
+      {/* Modal galería completa (solo accesible con 5+ multimedias) */}
+      {modalGaleriaAbierto && (
+        <div className="galeria-overlay" onClick={() => setModalGaleriaAbierto(false)}>
+          <div className="galeria-modal" onClick={e => e.stopPropagation()}>
+            <button className="galeria-modal-close" onClick={() => setModalGaleriaAbierto(false)}>×</button>
+            <h3 className="galeria-modal-titulo">Galería completa</h3>
+            <div className="galeria-modal-grid">
+              {allMedia.map((media, i) => {
+                const esSeleccionada = mediaActual?.url === media.url;
+                if (media.type === 'image') return (
+                  <img
+                    key={i}
+                    src={media.url}
+                    alt={`Media ${i + 1}`}
+                    className={`galeria-modal-item${esSeleccionada ? ' seleccionada' : ''}`}
+                    onClick={() => { setMediaActual(media); setModalGaleriaAbierto(false); }}
+                  />
+                );
+                if (media.type === 'video') return (
+                  <video
+                    key={i}
+                    src={media.url}
+                    muted
+                    className={`galeria-modal-item${esSeleccionada ? ' seleccionada' : ''}`}
+                    onClick={() => { setMediaActual(media); setModalGaleriaAbierto(false); }}
+                  />
+                );
+                if (media.type === 'model') return (
+                  <div
+                    key={i}
+                    className={`galeria-modal-item model-thumb${esSeleccionada ? ' seleccionada' : ''}`}
+                    onClick={() => { setMediaActual(media); setModalGaleriaAbierto(false); }}
+                  >3D</div>
+                );
+                return null;
+              })}
             </div>
           </div>
         </div>
-
-      </div>
+      )}
     </div>
   );
 }
