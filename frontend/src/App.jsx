@@ -18,6 +18,8 @@ import Perfil from './pages/Perfil'
 import Guardados from './pages/Guardados'
 import Filtros from './pages/Filtros'
 import CrearInspiracion from './pages/CrearInspiracion'
+import MisModelos from './pages/MisModelos'
+import EditarProducto from './pages/EditarProducto'
 
 
 function App() {
@@ -35,6 +37,8 @@ function App() {
           <Route path="/inspiracion/:id" element={<InspiracionDetail />} />
           <Route path="/buscar" element={<Buscar />} />
           <Route path="/perfil" element={<Perfil />} />
+          <Route path="/mis-modelos" element={<MisModelos />} />
+          <Route path="/editar-producto/:id" element={<EditarProducto />} />
           <Route path="/guardados" element={<Guardados />} />
           <Route path="/filtros" element={<Filtros />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />

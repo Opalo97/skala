@@ -1,0 +1,261 @@
+:root {
+  --bg-beige: #fdf5e6;
+  --text-brown: #331505;
+  --text-light: #666;
+  --orange-btn: #ba6436;
+  --orange-btn-hover: #a1542a;
+  --menu-brown: #8f4618;
+}
+
+.mis-modelos-container {
+  padding: 40px 60px;
+  background-color: var(--bg-beige);
+  min-height: 100vh;
+  color: var(--text-brown);
+}
+
+/* --- CABECERA DE PERFIL --- */
+.perfil-info-header-mis-modelos {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 50px;
+}
+
+.avatar-perfil {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.perfil-textos h2 {
+  margin: 0 0 5px 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-brown);
+}
+
+.perfil-textos p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--text-light);
+}
+
+/* --- SECCIONES COMUNES --- */
+.modelos-section {
+  margin-bottom: 60px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 25px;
+}
+
+.header-titles h1 {
+  font-size: 32px;
+  margin: 0 0 10px 0;
+  font-weight: 800;
+  color: var(--text-brown);
+}
+
+.tabs {
+  display: flex;
+  gap: 20px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-light);
+}
+
+.tab {
+  cursor: pointer;
+}
+
+.tab.active {
+  color: var(--text-brown);
+  border-bottom: 2px solid var(--text-brown);
+  padding-bottom: 2px;
+}
+
+.btn-crear-accion {
+  background-color: var(--orange-btn);
+  color: white;
+  padding: 10px 24px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 15px;
+  transition: 0.2s;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(186, 100, 54, 0.2);
+}
+
+.btn-crear-accion:hover {
+  background-color: var(--orange-btn-hover);
+  transform: translateY(-2px);
+}
+
+/* --- SCROLL HORIZONTAL --- */
+.horizontal-scroll-container {
+  display: flex;
+  gap: 25px;
+  overflow-x: auto;
+  padding-bottom: 20px; /* Para que la sombra y el menú no se corten */
+  scroll-behavior: smooth;
+  /* Ocultar barra de scroll para limpieza */
+  scrollbar-width: none; /* Firefox */
+}
+.horizontal-scroll-container::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+/* --- TARJETAS --- */
+.model-card {
+  flex: 0 0 280px; /* Ancho fijo para que no se encojan */
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.image-container {
+  width: 100%;
+  height: 280px;
+  border-radius: 32px;
+  overflow: hidden;
+}
+
+.model-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+/* Asegurar que todos los títulos h1 cojan el color marrón */
+.section-header h1 {
+  font-size: 32px;
+  margin: 0 0 10px 0;
+  font-weight: 800;
+  color: var(--text-brown);
+}
+
+/* Footer de la tarjeta */
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px 0 15px;
+  color: var(--text-brown);
+}
+
+.card-stats {
+  display: flex;
+  gap: 15px;
+}
+
+.stat {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.kebab-container {
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  flex-grow: 1;
+}
+
+.kebab-dot-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-brown);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: 0.2s;
+}
+
+.kebab-dot-btn:hover {
+  color: var(--orange-btn);
+}
+
+/* --- MENÚ DE OPCIONES (Bocadillo Marrón) --- */
+.kebab-dropdown {
+  position: absolute;
+  bottom: 35px; /* Aparece encima de los puntos */
+  right: -5px;
+  background-color: var(--menu-brown);
+  border-radius: 8px;
+  padding: 8px 12px;
+  display: flex;
+  gap: 10px;
+  z-index: 100;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+  animation: fadeIn 0.2s ease-out;
+}
+
+/* El piquito del bocadillo apuntando hacia abajo */
+.kebab-dropdown::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  right: 12px;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid var(--menu-brown);
+}
+
+.kebab-action-btn {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.2s;
+}
+
+.kebab-action-btn:hover {
+  transform: scale(1.1);
+  color: #ffdab3;
+}
+
+/* Capa invisible para cerrar el menú al hacer clic fuera */
+.menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 99;
+}
+
+/* Mensajes de estado */
+.status-msg {
+  text-align: center;
+  font-size: 18px;
+  margin-top: 50px;
+}
+.empty-msg {
+  color: var(--text-light);
+  font-size: 15px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.product-card .model-image {
+  mix-blend-mode: multiply;
+}

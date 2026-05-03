@@ -246,7 +246,7 @@ export default function Perfil() {
 
         {/* Sección Mis modelos */}
         <div className="mis-modelos-section">
-          <button className="mis-modelos-btn" onClick={() => navigate('/dashboard')}>
+          <button className="mis-modelos-btn" onClick={() => navigate('/mis-modelos')}>
             <div className="mis-modelos-placeholder">
               Mis modelos
             </div>

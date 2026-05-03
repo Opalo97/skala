@@ -116,9 +116,24 @@ const eliminarInspiracion = async (req, res) => {
 
 };
 
+// Acción: Obtener inspiraciones de un usuario concreto
+const obtenerInspiracionesUsuario = async (req, res) => {
+    try {
+        const usuarioId = req.params.id;
+        const inspiraciones = await Inspiracion.find({ autor: usuarioId })
+            .populate('autor', 'username fotoPerfil')
+            .populate('productos');
+            
+        res.status(200).json(inspiraciones);
+    } catch (error) {
+        res.status(500).json({ mensaje: 'Error al obtener las inspiraciones del usuario', error });
+    }
+};
+
 // Exportamos las funciones para que las rutas las puedan usar
 module.exports = {
     obtenerInspiraciones,
     crearInspiracion,
-    eliminarInspiracion
+    eliminarInspiracion,
+    obtenerInspiracionesUsuario
 };

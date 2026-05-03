@@ -188,11 +188,62 @@ const eliminarProducto = async (req, res) => {
     }
 };
 
+// Acción: Obtener productos de un usuario concreto
+const obtenerProductosUsuario = async (req, res) => {
+    try {
+        const usuarioId = req.params.id;
+        const productos = await Producto.find({ subidoPor: usuarioId })
+            .populate('subidoPor', 'username nombreCompleto');
+            
+        res.status(200).json(productos);
+    } catch (error) {
+        res.status(500).json({ mensaje: 'Error al obtener los productos del usuario', error });
+    }
+};
 
+// Acción: Actualizar un producto existente (PUT)
+const actualizarProducto = async (req, res) => {
+    try {
+        const productoId = req.params.id;
+        
+        // Parsear especificaciones si vienen como string
+        let especificaciones = req.body.especificaciones || {};
+        if (typeof especificaciones === 'string') {
+            try { especificaciones = JSON.parse(especificaciones); } catch (e) { /* ignore */ }
+        }
+
+        // Preparamos los datos a actualizar (Por ahora, textos y números)
+        // Nota: La actualización de imágenes requeriría una lógica extra para borrar de Cloudinary, 
+        // por simplicidad en esta versión actualizamos los datos del formulario.
+        const datosActualizados = {
+            nombre: req.body.nombre,
+            linkCompra: req.body.linkCompra || '',
+            precio: parseFloat(req.body.precio) || 0,
+            vendedor: req.body.vendedor || '',
+            especificaciones
+        };
+
+        const productoActualizado = await Producto.findByIdAndUpdate(
+            productoId, 
+            datosActualizados, 
+            { new: true } // Esto hace que devuelva el objeto ya actualizado
+        );
+
+        if (!productoActualizado) {
+            return res.status(404).json({ mensaje: 'Producto no encontrado' });
+        }
+
+        res.status(200).json(productoActualizado);
+    } catch (error) {
+        res.status(500).json({ mensaje: 'Error al actualizar el producto', error: error.message });
+    }
+};
 
 module.exports = {
     obtenerProductos,
     obtenerProductoPorId,
     crearProducto,
-    eliminarProducto
+    eliminarProducto,
+    obtenerProductosUsuario,
+    actualizarProducto
 };
