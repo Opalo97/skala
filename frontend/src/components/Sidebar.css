@@ -25,6 +25,9 @@
   color: #813405;         /* marrón de tu mockup */
   transition: background-color 0.2s, color 0.2s, transform 0.2s;
   text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
 .sidebar-item:hover {
@@ -44,26 +47,26 @@
   font-family: inherit;
 }
 
-/* Estilo específico para el botón de crear */
-.sidebar-item[onclick*="create"],
-.sidebar-item:has(+ .create-modal) {
-  /* Este selector se aplicará al botón de crear */
-}
-
-/* Mejor: usar clase específica para el botón de crear */
 .create-btn {
-  background-color: #f5e6d0;  /* Fondo de la sidebar */
+  background: none;
   border: none;
   cursor: pointer;
   padding: 0;
   font-family: inherit;
-  color: #813405;
 }
 
-.create-btn:hover {
-  background-color: #e8d5b7;  /* Color marrón oscuro al hover */
-  color: #813405;             /* Texto claro para contraste */
-  transform: scale(1.05);     /* Efecto visual adicional */
-  
+/* Ensure :active and :focus states visually match the .active class */
+.sidebar-item:active,
+.sidebar-item.active,
+.sidebar-item:focus {
+  background-color: #813405;
+  color: #f5e6d0;
+  outline: none;
 }
+
+/* Remove native button focus ring for anchors/buttons and keep accessible focus appearance if desired */
+.sidebar-item:focus {
+  box-shadow: 0 0 0 3px rgba(129,52,5,0.12);
+}
+
 

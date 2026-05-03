@@ -110,6 +110,31 @@ const eliminarUsuario = async (req, res) => {
     }
 };
 
+// Acción: Actualizar usuario (credenciales, bio, email, password)
+const actualizarUsuario = async (req, res) => {
+    try {
+        const usuarioId = req.params.id;
+
+        // Construir objeto de actualización sólo con campos permitidos
+        const allowed = ['nombreCompleto', 'email', 'password', 'bio', 'username'];
+        const updates = {};
+        allowed.forEach(field => {
+            if (req.body[field] !== undefined) updates[field] = req.body[field];
+        });
+
+        if (Object.keys(updates).length === 0) {
+            return res.status(400).json({ mensaje: 'No se proporcionaron campos a actualizar' });
+        }
+
+        const usuario = await Usuario.findByIdAndUpdate(usuarioId, updates, { new: true, runValidators: true });
+        if (!usuario) return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+
+        res.status(200).json(usuario);
+    } catch (error) {
+        res.status(500).json({ mensaje: 'Error al actualizar el usuario', error });
+    }
+};
+
 // Acción: Actualizar foto de perfil
 const actualizarFotoPerfil = async (req, res) => {
     try {
@@ -145,5 +170,6 @@ module.exports = {
     crearUsuario,
     obtenerUsuarioPorId,
     eliminarUsuario,
-    actualizarFotoPerfil
+    actualizarFotoPerfil,
+    actualizarUsuario
 };

@@ -65,11 +65,26 @@ export default function Perfil() {
       });
 
       if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.mensaje || 'Error al actualizar la foto');
+        let msg = 'Error al actualizar la foto';
+        try {
+          const data = await response.json();
+          msg = data.mensaje || data.message || JSON.stringify(data);
+        } catch (parseErr) {
+          const text = await response.text();
+          if (text) msg = text;
+        }
+        throw new Error(msg);
       }
 
-      const updatedUser = await response.json();
+      let updatedUser;
+      try {
+        updatedUser = await response.json();
+      } catch (parseErr) {
+        // Respuesta no JSON; fallback
+        const text = await response.text();
+        throw new Error(text || 'Respuesta inesperada del servidor');
+      }
+
       setUsuario(updatedUser);
       alert('Foto de perfil actualizada correctamente');
     } catch (err) {
@@ -111,13 +126,25 @@ export default function Perfil() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
       });
-
       if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.mensaje || 'Error al actualizar');
+        let msg = 'Error al actualizar';
+        try {
+          const data = await response.json();
+          msg = data.mensaje || data.message || JSON.stringify(data);
+        } catch (parseErr) {
+          const text = await response.text();
+          if (text) msg = text;
+        }
+        throw new Error(msg);
       }
 
-      const updatedUser = await response.json();
+      let updatedUser;
+      try {
+        updatedUser = await response.json();
+      } catch (parseErr) {
+        const text = await response.text();
+        throw new Error(text || 'Respuesta inesperada del servidor');
+      }
       setUsuario(updatedUser);
       setEditing(prev => ({ ...prev, [field]: false }));
       setEditedValues(prev => ({ ...prev, [field]: '' }));

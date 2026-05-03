@@ -4,6 +4,7 @@ import { BiHome, BiSearch, BiPlus, BiUser, BiHeart, BiSliderAlt } from "react-ic
 import "./Sidebar.css";
 import AuthModal from "./AuthModal";
 import CreateModal from "./CreateModal";
+import FavModal from "./FavModal";
 
 const navItems = [
   { to: "/", label: "Inicio", Icon: BiHome },
@@ -17,6 +18,7 @@ const navItems = [
 export default function Sidebar() {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showFavModal, setShowFavModal] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -45,6 +47,15 @@ export default function Sidebar() {
     }
   };
 
+  const handleGuardadosClick = (e) => {
+    e.preventDefault();
+    if (isUserLoggedIn()) {
+      setShowFavModal(true);
+    } else {
+      setShowAuthModal(true);
+    }
+  };
+
   return (
     <>
       <nav className="sidebar">
@@ -66,7 +77,7 @@ export default function Sidebar() {
             return (
               <button
                 key="create"
-                className="create-btn"
+                className="sidebar-item create-btn"
                 onClick={handleCreateClick}
                 title={item.label}
               >
@@ -75,6 +86,20 @@ export default function Sidebar() {
             );
           }
           
+          // Intercept the Guardados link to show modal instead
+          if (item.to === '/guardados') {
+            return (
+              <button
+                key={item.to}
+                className="sidebar-item"
+                onClick={handleGuardadosClick}
+                title={item.label}
+              >
+                <item.Icon size={28} />
+              </button>
+            );
+          }
+
           return (
             <NavLink
               key={item.to}
@@ -95,6 +120,7 @@ export default function Sidebar() {
 
       <AuthModal isOpen={showAuthModal} onClose={() => setShowAuthModal(false)} />
       <CreateModal isOpen={showCreateModal} onClose={() => setShowCreateModal(false)} />
+      <FavModal isOpen={showFavModal} onClose={() => setShowFavModal(false)} />
     </>
   );
 }

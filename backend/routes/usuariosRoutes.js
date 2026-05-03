@@ -24,5 +24,10 @@ router.post('/', upload.single('fotoPerfil'), usuarioController.crearUsuario);
 // Rutas con ID ('/api/usuarios/:id')
 router.get('/:id', usuarioController.obtenerUsuarioPorId);
 router.delete('/:id', usuarioController.eliminarUsuario);
+// Actualizar usuario (credenciales, bio, etc.)
+router.put('/:id', usuarioController.actualizarUsuario);
+
+// Actualizar foto de perfil (usa multer + cloudinary)
+router.put('/:id/actualizar-foto', upload.single('fotoPerfil'), usuarioController.actualizarFotoPerfil);
 
 module.exports = router;

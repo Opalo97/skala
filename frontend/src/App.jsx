@@ -20,6 +20,8 @@ import Filtros from './pages/Filtros'
 import CrearInspiracion from './pages/CrearInspiracion'
 import MisModelos from './pages/MisModelos'
 import EditarProducto from './pages/EditarProducto'
+import ColeccionesDestacadas from './pages/ColeccionesDestacadas'
+import ListasDestacadas from './pages/ListasDestacadas'
 
 
 function App() {
@@ -40,6 +42,8 @@ function App() {
           <Route path="/mis-modelos" element={<MisModelos />} />
           <Route path="/editar-producto/:id" element={<EditarProducto />} />
           <Route path="/guardados" element={<Guardados />} />
+          <Route path="/colecciones-destacadas" element={<ColeccionesDestacadas />} />
+          <Route path="/listas-destacadas" element={<ListasDestacadas />} />
           <Route path="/filtros" element={<Filtros />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         </Route>

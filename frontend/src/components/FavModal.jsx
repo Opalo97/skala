@@ -1,19 +1,19 @@
 import { useNavigate } from "react-router-dom";
-import { BiUserPlus, BiLogIn, BiX } from "react-icons/bi";
+import { BiPlus, BiHeart, BiX } from "react-icons/bi";
 import "./AuthModal.css";
 
-export default function AuthModal({ isOpen, onClose }) {
+export default function FavModal({ isOpen, onClose }) {
   const navigate = useNavigate();
 
   if (!isOpen) return null;
 
-  const handleRegister = () => {
-    navigate("/register");
+  const goToColecciones = () => {
+    navigate('/colecciones-destacadas');
     onClose();
   };
 
-  const handleLogin = () => {
-    navigate("/login");
+  const goToListas = () => {
+    navigate('/listas-destacadas');
     onClose();
   };
 
@@ -23,19 +23,20 @@ export default function AuthModal({ isOpen, onClose }) {
         <button className="auth-modal-close" onClick={onClose}>
           <BiX size={28} />
         </button>
-        
+
         <div className="auth-modal-content">
-          <h2>Para realizar esta acción, elige una opción</h2>
-          
+          <h2>Elige una sección destacada</h2>
+       
+
           <div className="auth-modal-buttons">
-            <button className="auth-btn register-btn" onClick={handleRegister}>
-              <BiUserPlus size={24} />
-              Registrarse
+            <button className="auth-btn register-btn" onClick={goToColecciones}>
+              <BiPlus size={20} />
+              Colecciones destacadas
             </button>
-            
-            <button className="auth-btn login-btn" onClick={handleLogin}>
-              <BiLogIn size={24} />
-              Iniciar sesión
+
+            <button className="auth-btn login-btn" onClick={goToListas}>
+              <BiHeart size={20} />
+              Listas destacadas
             </button>
           </div>
         </div>
