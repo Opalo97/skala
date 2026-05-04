@@ -5,6 +5,7 @@ const cloudinary = require('cloudinary').v2;
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
 require('dotenv').config(); // Esto lee las contraseñas de tu archivo .env
 
 const app = express();
@@ -55,9 +56,14 @@ app.use('/api/colecciones', require('./routes/coleccionRoutes'));
 app.use('/api/listas', require('./routes/listaRoutes'));
 app.use('/api/elementos', require('./routes/elementosRoutes'));
 
-// SPA Fallback: redirige todas las rutas al index.html para que React Router las maneje
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public/dist/index.html'));
+// SPA Fallback: redirige todas las rutas no-API al index.html para que React Router las maneje
+app.use((req, res) => {
+    const indexPath = path.join(__dirname, 'public/dist/index.html');
+    if (fs.existsSync(indexPath)) {
+        res.sendFile(indexPath);
+    } else {
+        res.status(404).json({ error: 'Not found' });
+    }
 });
 
 // Arrancar el servidor
