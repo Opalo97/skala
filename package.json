@@ -1,4 +1,19 @@
 {
+  "name": "skala",
+  "version": "1.0.0",
+  "description": "Plataforma multimedia Skala",
+  "main": "backend/server.js",
+  "scripts": {
+    "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install && cd ..",
+    "dev": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm run dev\"",
+    "build:frontend": "cd frontend && npm run build",
+    "build:all": "npm run build:frontend && node scripts/move-dist.js",
+    "start": "node backend/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "dependencies": {
     "cloudinary": "^1.41.3",
     "lucide-react": "^1.9.0",
@@ -6,5 +21,8 @@
     "multer-storage-cloudinary": "^4.0.0",
     "react-icons": "^5.6.0",
     "react-router-dom": "^7.14.2"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.0"
   }
 }

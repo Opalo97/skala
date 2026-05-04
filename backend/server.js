@@ -4,6 +4,7 @@ const cors = require('cors');
 const cloudinary = require('cloudinary').v2;
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const multer = require('multer');
+const path = require('path');
 require('dotenv').config(); // Esto lee las contraseñas de tu archivo .env
 
 const app = express();
@@ -32,6 +33,9 @@ app.use(cors());
 app.use(express.json()); // Permite al servidor entender datos en formato JSON
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
+// Servir archivos estáticos del frontend compilado
+app.use(express.static(path.join(__dirname, 'public/dist')));
+
 // Conexión a la base de datos MongoDB
 mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log('🔥 Base de datos MongoDB conectada con éxito'))
@@ -50,6 +54,11 @@ app.use('/api/comentarios', require('./routes/comentarioRoutes'));
 app.use('/api/colecciones', require('./routes/coleccionRoutes'));
 app.use('/api/listas', require('./routes/listaRoutes'));
 app.use('/api/elementos', require('./routes/elementosRoutes'));
+
+// SPA Fallback: redirige todas las rutas al index.html para que React Router las maneje
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/dist/index.html'));
+});
 
 // Arrancar el servidor
 const PORT = process.env.PORT || 5000;
