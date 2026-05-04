@@ -4,9 +4,9 @@
   "description": "Plataforma multimedia Skala",
   "main": "backend/server.js",
   "scripts": {
-    "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install && cd ..",
-    "dev": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm run dev\"",
-    "build:frontend": "cd frontend && npm run build",
+    "install:all": "npm install && npm --prefix backend install && npm --prefix frontend install",
+    "dev": "concurrently \"npm --prefix backend run dev\" \"npm --prefix frontend run dev\"",
+    "build:frontend": "npm --prefix frontend run build",
     "build:all": "npm run build:frontend && node scripts/move-dist.js",
     "start": "node backend/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
