@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Register.css';
+import API_BASE_URL from '../config/api';
 
 export default function Register() {
   const navigate = useNavigate();
@@ -86,7 +87,7 @@ export default function Register() {
         form.append('fotoPerfil', fotoPerfil);
       }
 
-      const response = await fetch('http://localhost:5000/api/usuarios', {
+      const response = await fetch(`${API_BASE_URL}/api/usuarios`, {
         method: 'POST',
         body: form,
         // No establecer Content-Type, se establece automáticamente con FormData

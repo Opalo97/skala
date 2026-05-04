@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { BiHeart, BiSolidHeart } from "react-icons/bi";
 import axios from "axios";
 import "./ItemDetail.css";
+import API_BASE_URL from '../config/api';
 
 export default function ItemDetail() {
   const { id } = useParams();
@@ -18,9 +19,9 @@ export default function ItemDetail() {
       try {
         const usuarioId = localStorage.getItem('usuarioId');
         const [resProd, resInsp, resUser] = await Promise.all([
-          axios.get(`http://localhost:5000/api/productos/${id}`),
-          axios.get(`http://localhost:5000/api/inspiraciones/producto/${id}`),
-          usuarioId ? axios.get(`http://localhost:5000/api/usuarios/${usuarioId}`) : Promise.resolve(null)
+          axios.get(`${API_BASE_URL}/api/productos/${id}`),
+          axios.get(`${API_BASE_URL}/api/inspiraciones/producto/${id}`),
+          usuarioId ? axios.get(`${API_BASE_URL}/api/usuarios/${usuarioId}`) : Promise.resolve(null)
         ]);
 
         const prod = resProd.data;
@@ -51,7 +52,7 @@ export default function ItemDetail() {
     if (!usuarioId) return;
     try {
       const res = await axios.put(
-        `http://localhost:5000/api/usuarios/${usuarioId}/favorito-producto`,
+        `${API_BASE_URL}/api/usuarios/${usuarioId}/favorito-producto`,
         { productoId: id }
       );
       setEsFavorito(res.data.favorito);

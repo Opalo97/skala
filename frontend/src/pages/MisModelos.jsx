@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
+import API_BASE_URL from '../config/api';
 import { BiHeart, BiCommentDetail, BiDotsHorizontalRounded, BiEdit, BiTrash } from 'react-icons/bi';
 import './MisModelos.css';
 
@@ -104,9 +105,9 @@ export default function MisModelos() {
     const cargarDatos = async () => {
       try {
         const [resUser, resInsp, resProd] = await Promise.all([
-          axios.get(`http://localhost:5000/api/usuarios/${userId}`),
-          axios.get(`http://localhost:5000/api/inspiraciones/usuario/${userId}`),
-          axios.get(`http://localhost:5000/api/productos/usuario/${userId}`)
+          axios.get(`${API_BASE_URL}/api/usuarios/${userId}`),
+          axios.get(`${API_BASE_URL}/api/inspiraciones/usuario/${userId}`),
+          axios.get(`${API_BASE_URL}/api/productos/usuario/${userId}`)
         ]);
 
         setUsuario(resUser.data);
@@ -131,7 +132,7 @@ export default function MisModelos() {
       setOpenMenuId(null); // Cierra el menú
       try {
         const endpoint = tipo === 'inspiracion' ? 'inspiraciones' : 'productos';
-        await axios.delete(`http://localhost:5000/api/${endpoint}/${id}`);
+        await axios.delete(`${API_BASE_URL}/api/${endpoint}/${id}`);
         
         if (tipo === 'inspiracion') {
           setMisInspiraciones(prev => prev.filter(item => item._id !== id));

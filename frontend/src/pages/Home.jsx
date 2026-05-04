@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import './Home.css'
+import API_BASE_URL from '../config/api'
 
 export default function Home() {
   const [inspiraciones, setInspiraciones] = useState([])
@@ -13,8 +14,8 @@ export default function Home() {
     const fetchData = async () => {
       try {
         const [resInspiraciones, resProductos] = await Promise.all([
-          fetch('http://localhost:5000/api/inspiraciones'),
-          fetch('http://localhost:5000/api/productos')
+          fetch(`${API_BASE_URL}/api/inspiraciones`),
+          fetch(`${API_BASE_URL}/api/productos`)
         ])
         if (!resInspiraciones.ok || !resProductos.ok) throw new Error('Error al obtener datos')
 

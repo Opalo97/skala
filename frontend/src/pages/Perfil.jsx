@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BiEdit, BiCheck, BiX } from 'react-icons/bi';
 import './Perfil.css';
+import API_BASE_URL from '../config/api';
 
 export default function Perfil() {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ export default function Perfil() {
 
   const fetchUsuario = async (usuarioId) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/usuarios/${usuarioId}`);
+      const response = await fetch(`${API_BASE_URL}/api/usuarios/${usuarioId}`);
       if (!response.ok) {
         throw new Error('Error al obtener el perfil');
       }
@@ -59,7 +60,7 @@ export default function Perfil() {
       const form = new FormData();
       form.append('fotoPerfil', file);
 
-      const response = await fetch(`http://localhost:5000/api/usuarios/${usuario._id}/actualizar-foto`, {
+      const response = await fetch(`${API_BASE_URL}/api/usuarios/${usuario._id}/actualizar-foto`, {
         method: 'PUT',
         body: form,
       });
@@ -121,7 +122,7 @@ export default function Perfil() {
       const body = {};
       body[field] = value;
 
-      const response = await fetch(`http://localhost:5000/api/usuarios/${usuario._id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/usuarios/${usuario._id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),

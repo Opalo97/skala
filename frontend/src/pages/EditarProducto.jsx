@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
-import './CrearProducto.css'; // ¡Reutilizamos tu CSS de crear producto!
+import './CrearProducto.css';
+import API_BASE_URL from '../config/api'; // ¡Reutilizamos tu CSS de crear producto!
 
 export default function EditarProducto() {
     const navigate = useNavigate();
@@ -24,7 +25,7 @@ export default function EditarProducto() {
     useEffect(() => {
         const cargarProducto = async () => {
             try {
-                const res = await axios.get(`http://localhost:5000/api/productos/${id}`);
+                const res = await axios.get(`${API_BASE_URL}/api/productos/${id}`);
                 const prod = res.data;
                 
                 // Rellenamos el formulario con los datos de la base de datos
@@ -63,7 +64,7 @@ export default function EditarProducto() {
             formData.append('especificaciones', JSON.stringify(especificaciones));
 
             // Hacemos un PUT a la nueva ruta que creamos en el backend
-            await axios.put(`http://localhost:5000/api/productos/${id}`, formData, {
+            await axios.put(`${API_BASE_URL}/api/productos/${id}`, formData, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }

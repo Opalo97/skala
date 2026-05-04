@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { MdAdd, MdClose } from 'react-icons/md';
 import './CrearProducto.css';
+import API_BASE_URL from '../config/api';
 
 function CrearProducto() {
     const navigate = useNavigate();
@@ -151,7 +152,7 @@ function CrearProducto() {
             videos.forEach(v => formData.append('videos', v.archivo));
             if (modelo3d.length > 0) formData.append('modelo', modelo3d[0].archivo);
 
-            await axios.post('http://localhost:5000/api/productos', formData, {
+            await axios.post(`${API_BASE_URL}/api/productos`, formData, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }

@@ -4,6 +4,7 @@ import { BiHeart, BiSolidHeart } from 'react-icons/bi'
 import { BsArrowRight } from 'react-icons/bs'
 import axios from 'axios'
 import './InspiracionDetail.css'
+import API_BASE_URL from '../config/api'
 
 export default function InspiracionDetail() {
   const { id } = useParams()
@@ -22,9 +23,9 @@ export default function InspiracionDetail() {
       try {
         const usuarioId = localStorage.getItem('usuarioId')
         const [resInsp, resComentarios, resUser] = await Promise.all([
-          axios.get(`http://localhost:5000/api/inspiraciones/${id}`),
-          axios.get(`http://localhost:5000/api/comentarios/inspiracion/${id}`),
-          usuarioId ? axios.get(`http://localhost:5000/api/usuarios/${usuarioId}`) : Promise.resolve(null)
+          axios.get(`${API_BASE_URL}/api/inspiraciones/${id}`),
+          axios.get(`${API_BASE_URL}/api/comentarios/inspiracion/${id}`),
+          usuarioId ? axios.get(`${API_BASE_URL}/api/usuarios/${usuarioId}`) : Promise.resolve(null)
         ])
 
         const insp = resInsp.data
@@ -54,7 +55,7 @@ export default function InspiracionDetail() {
     if (!usuarioId) return
     try {
       const res = await axios.put(
-        `http://localhost:5000/api/usuarios/${usuarioId}/favorito-inspiracion`,
+        `${API_BASE_URL}/api/usuarios/${usuarioId}/favorito-inspiracion`,
         { inspiracionId: id }
       )
       setEsFavorito(res.data.favorito)
@@ -68,7 +69,7 @@ export default function InspiracionDetail() {
     if (!usuarioId || !textoComentario.trim()) return
     setEnviando(true)
     try {
-      const res = await axios.post('http://localhost:5000/api/comentarios', {
+      const res = await axios.post(`${API_BASE_URL}/api/comentarios`, {
         inspiracion: id,
         usuario: usuarioId,
         texto: textoComentario.trim()

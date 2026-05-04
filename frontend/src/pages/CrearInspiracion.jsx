@@ -2,6 +2,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './CrearInspiracion.css';
+import API_BASE_URL from '../config/api';
 
 export default function CrearInspiracion() {
   const navigate = useNavigate();
@@ -49,7 +50,7 @@ export default function CrearInspiracion() {
     if (productos.length > 0) return;
     try {
       setLoadingProductos(true);
-      const res = await axios.get('http://localhost:5000/api/productos');
+      const res = await axios.get(`${API_BASE_URL}/api/productos`);
       setProductos(res.data || []);
     } catch (err) {
       console.error('Error cargando productos:', err);
@@ -87,7 +88,7 @@ export default function CrearInspiracion() {
 
       archivos.forEach(a => formData.append('multimedia', a.file));
 
-      await axios.post('http://localhost:5000/api/inspiraciones', formData, {
+      await axios.post(`${API_BASE_URL}/api/inspiraciones`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
 
