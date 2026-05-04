@@ -6,7 +6,7 @@
   "scripts": {
     "install:all": "npm install && npm --prefix backend install && npm --prefix frontend install",
     "dev": "concurrently \"npm --prefix backend run dev\" \"npm --prefix frontend run dev\"",
-    "build:frontend": "npm --prefix frontend run build",
+    "build:frontend": "npm --prefix frontend run build 2>&1",
     "build:all": "npm run build:frontend && node scripts/move-dist.js",
     "start": "node backend/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
