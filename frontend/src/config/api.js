@@ -4,8 +4,8 @@
  * En producción: usa rutas relativas (/api/...)
  */
 
-const API_BASE_URL = import.meta.env.MODE === 'development' 
-  ? 'http://localhost:5000'
-  : '';
+// Verificar si estamos en localhost
+const isLocalhost = typeof window !== 'undefined' && window.location.hostname === 'localhost';
+const API_BASE_URL = isLocalhost ? 'http://localhost:5000' : '';
 
 export default API_BASE_URL;
