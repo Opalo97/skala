@@ -13,20 +13,26 @@ const backendDir = path.join(rootDir, 'backend');
 try {
     // Paso 1: Build del frontend
     console.log('📦 Compilando frontend con Vite...');
-    process.chdir(frontendDir);
     
     if (!fs.existsSync(path.join(frontendDir, 'node_modules'))) {
         console.log('⚠️  node_modules no encontrado en frontend, instalando...');
-        execSync('npm install', { stdio: 'inherit' });
+        execSync('npm install', { cwd: frontendDir, stdio: 'inherit' });
     }
     
-    execSync('npm run build', { stdio: 'inherit' });
+    // Usar ruta absoluta a vite
+    const vitePath = path.join(frontendDir, 'node_modules/.bin/vite');
+    if (fs.existsSync(vitePath)) {
+        console.log('✅ Vite encontrado en:', vitePath);
+        execSync(`"${vitePath}" build`, { cwd: frontendDir, stdio: 'inherit', shell: true });
+    } else {
+        console.log('⚠️  Vite no encontrado, intentando con npm run build...');
+        execSync('npm run build', { cwd: frontendDir, stdio: 'inherit' });
+    }
     console.log('✅ Frontend compilado exitosamente\n');
 
     // Paso 2: Mover archivos compilados
     console.log('📦 Moviendo archivos compilados...');
-    process.chdir(rootDir);
-    execSync('node scripts/move-dist.js', { stdio: 'inherit' });
+    execSync('node scripts/move-dist.js', { cwd: rootDir, stdio: 'inherit' });
     console.log('✅ Archivos movidos exitosamente\n');
 
     console.log('🎉 Build completado con éxito');
