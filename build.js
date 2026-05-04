@@ -10,6 +10,13 @@ const rootDir = __dirname;
 const frontendDir = path.join(rootDir, 'frontend');
 
 try {
+    // Paso 0: Limpiar cache de Vite
+    console.log('🧹 Limpiando cache...');
+    const cacheDir = path.join(frontendDir, 'node_modules/.vite');
+    if (fs.existsSync(cacheDir)) {
+        execSync(`rm -rf "${cacheDir}"`, { shell: true });
+    }
+
     // Paso 1: Build del frontend con npx
     console.log('📦 Compilando frontend con Vite...');
     
