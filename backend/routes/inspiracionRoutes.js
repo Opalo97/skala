@@ -13,6 +13,7 @@ router.get('/:id', inspiracionController.obtenerInspiracionPorId);
 
 // POST acepta archivos en 'multimedia' (varios)
 router.post('/', upload.array('multimedia', 20), inspiracionController.crearInspiracion);
+router.put('/:id', upload.array('multimedia', 10), inspiracionController.actualizarInspiracion);
 router.delete('/:id', inspiracionController.eliminarInspiracion);
 
 module.exports = router;

@@ -155,6 +155,96 @@ const obtenerInspiracionesPorProducto = async (req, res) => {
     }
 };
 
+// Acción: Actualizar una inspiración existente (PUT)
+const actualizarInspiracion = async (req, res) => {
+    try {
+        const inspiracionId = req.params.id;
+        const inspiracionExistente = await Inspiracion.findById(inspiracionId);
+
+        if (!inspiracionExistente) {
+            return res.status(404).json({ mensaje: 'Inspiración no encontrada' });
+        }
+
+        // 1. Manejo de archivos NUEVOS a subir a Cloudinary
+        const files = req.files || [];
+        const uploadBuffer = (buffer, options) => {
+            return new Promise((resolve, reject) => {
+                const uploadStream = cloudinary.uploader.upload_stream(options, (error, result) => {
+                    if (error) return reject(error);
+                    resolve(result);
+                });
+                const readable = new Readable();
+                readable._read = () => {};
+                readable.push(buffer);
+                readable.push(null);
+                readable.pipe(uploadStream);
+            });
+        };
+
+        const imagenesNuevas = [];
+        const videosNuevos = [];
+
+        for (const f of files) {
+            const isImage = f.mimetype.startsWith('image/');
+            const isVideo = f.mimetype.startsWith('video/');
+            const options = { folder: 'skala/inspiraciones' };
+
+            if (isImage) options.resource_type = 'image';
+            else if (isVideo) options.resource_type = 'video';
+            else options.resource_type = 'raw';
+
+            const resUp = await uploadBuffer(f.buffer, options);
+
+            if (isImage) imagenesNuevas.push(resUp.secure_url);
+            else if (isVideo) videosNuevos.push(resUp.secure_url);
+        }
+
+        // 2. Procesar datos de texto y arrays enviados desde el frontend
+        const body = req.body || {};
+
+        let muebles = body.muebles || [];
+        if (typeof muebles === 'string') {
+            try { muebles = JSON.parse(muebles); } catch (e) { /* ignorar */ }
+        }
+
+        let imagenesActuales = [];
+        if (body.imagenesActuales) {
+            try { imagenesActuales = JSON.parse(body.imagenesActuales); } catch (e) { /* ignorar */ }
+        }
+
+        let videosActuales = [];
+        if (body.videosActuales) {
+            try { videosActuales = JSON.parse(body.videosActuales); } catch (e) { /* ignorar */ }
+        }
+
+        // 3. Combinar multimedia vieja con la nueva
+        const imagenesFinales = [...imagenesActuales, ...imagenesNuevas];
+        const videosFinales = [...videosActuales, ...videosNuevos];
+
+        // 4. Actualizar en la BD
+        const inspiracionActualizada = await Inspiracion.findByIdAndUpdate(
+            inspiracionId,
+            {
+                nombre: body.nombre,
+                zonaCasa: body.zonaCasa,
+                categoriaDecoracion: body.categoriaDecoracion,
+                productos: muebles,
+                multimedia: {
+                    imagenes: imagenesFinales,
+                    videos: videosFinales
+                }
+            },
+            { new: true } // Para que devuelva la info ya actualizada
+        );
+
+        res.status(200).json(inspiracionActualizada);
+
+    } catch (error) {
+        console.error('Error actualizarInspiracion:', error);
+        res.status(500).json({ mensaje: 'Error al actualizar la inspiración', error: error.message });
+    }
+};
+
 // Exportamos las funciones para que las rutas las puedan usar
 module.exports = {
     obtenerInspiraciones,
@@ -162,5 +252,6 @@ module.exports = {
     crearInspiracion,
     eliminarInspiracion,
     obtenerInspiracionesUsuario,
-    obtenerInspiracionesPorProducto
+    obtenerInspiracionesPorProducto,
+    actualizarInspiracion
 };

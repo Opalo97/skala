@@ -4,6 +4,22 @@ const Lista = require('../models/Lista'); // <-- Añade esto
 const Usuario = require('../models/Usuarios'); // <-- Añade esto para limpiar favoritos
 const cloudinary = require('cloudinary').v2;
 const { Readable } = require('stream');
+
+// Subir archivos en memoria a Cloudinary
+const uploadBuffer = (buffer, options) => {
+    return new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(options, (error, result) => {
+            if (error) return reject(error);
+            resolve(result);
+        });
+        const readable = new Readable();
+        readable._read = () => {};
+        readable.push(buffer);
+        readable.push(null);
+        readable.pipe(uploadStream);
+    });
+};
+
 // Acción: Obtener todos los productos
 const obtenerProductos = async (req, res) => {
     try {
@@ -83,21 +99,6 @@ const crearProducto = async (req, res) => {
         const fotosFiles = files.fotos || [];
         const videosFiles = files.videos || [];
         const modeloFiles = files.modelo || [];
-
-        // Helper para subir buffers a Cloudinary
-        const uploadBuffer = (buffer, options) => {
-            return new Promise((resolve, reject) => {
-                const uploadStream = cloudinary.uploader.upload_stream(options, (error, result) => {
-                    if (error) return reject(error);
-                    resolve(result);
-                });
-                const readable = new Readable();
-                readable._read = () => {};
-                readable.push(buffer);
-                readable.push(null);
-                readable.pipe(uploadStream);
-            });
-        };
 
         // Subir fotos
         const imagenes = [];
@@ -205,6 +206,13 @@ const obtenerProductosUsuario = async (req, res) => {
 const actualizarProducto = async (req, res) => {
     try {
         const productoId = req.params.id;
+        const files = req.files || {};
+        const fotosFiles = files.fotos || [];
+
+        const productoExistente = await Producto.findById(productoId);
+        if (!productoExistente) {
+            return res.status(404).json({ mensaje: 'Producto no encontrado' });
+        }
         
         // Parsear especificaciones si vienen como string
         let especificaciones = req.body.especificaciones || {};
@@ -212,15 +220,38 @@ const actualizarProducto = async (req, res) => {
             try { especificaciones = JSON.parse(especificaciones); } catch (e) { /* ignore */ }
         }
 
-        // Preparamos los datos a actualizar (Por ahora, textos y números)
-        // Nota: La actualización de imágenes requeriría una lógica extra para borrar de Cloudinary, 
-        // por simplicidad en esta versión actualizamos los datos del formulario.
+        // Las imágenes actuales que el frontend decide conservar
+        let imagenesActuales = productoExistente.imagenes || [];
+        if (req.body.imagenesActuales) {
+            if (typeof req.body.imagenesActuales === 'string') {
+                try {
+                    imagenesActuales = JSON.parse(req.body.imagenesActuales);
+                } catch (e) {
+                    return res.status(400).json({ mensaje: 'El formato de imagenesActuales no es válido' });
+                }
+            } else if (Array.isArray(req.body.imagenesActuales)) {
+                imagenesActuales = req.body.imagenesActuales;
+            }
+        }
+
+        const imagenesNuevas = [];
+        for (const f of fotosFiles) {
+            const resUp = await uploadBuffer(f.buffer, { folder: 'skala/muebles', resource_type: 'image' });
+            imagenesNuevas.push(resUp.secure_url);
+        }
+
+        const imagenes = [...imagenesActuales, ...imagenesNuevas];
+        if (imagenes.length > 5) {
+            return res.status(400).json({ mensaje: 'Máximo 5 imágenes permitidas por producto' });
+        }
+
         const datosActualizados = {
             nombre: req.body.nombre,
             linkCompra: req.body.linkCompra || '',
             precio: parseFloat(req.body.precio) || 0,
             vendedor: req.body.vendedor || '',
-            especificaciones
+            especificaciones,
+            imagenes
         };
 
         const productoActualizado = await Producto.findByIdAndUpdate(
@@ -228,10 +259,6 @@ const actualizarProducto = async (req, res) => {
             datosActualizados, 
             { new: true } // Esto hace que devuelva el objeto ya actualizado
         );
-
-        if (!productoActualizado) {
-            return res.status(404).json({ mensaje: 'Producto no encontrado' });
-        }
 
         res.status(200).json(productoActualizado);
     } catch (error) {

@@ -25,6 +25,7 @@ function MenuOpciones({ isOpen, onClose, onEdit, onDelete }) {
 }
 
 function TarjetaInspiracion({ inspiracion, openMenuId, onToggleMenu, onEliminar }) {
+  const navigate = useNavigate();
   const imagenUrl = inspiracion.multimedia?.imagenes?.[0] || 'https://via.placeholder.com/400x500';
   const isMenuOpen = openMenuId === `insp-${inspiracion._id}`;
 
@@ -45,7 +46,7 @@ function TarjetaInspiracion({ inspiracion, openMenuId, onToggleMenu, onEliminar 
           <MenuOpciones 
             isOpen={isMenuOpen} 
             onClose={() => onToggleMenu(null)}
-            onEdit={() => alert('Función de editar próximamente')}
+            onEdit={() => navigate(`/editar-inspiracion/${inspiracion._id}`)}
             onDelete={() => onEliminar(inspiracion._id, 'inspiracion')}
           />
         </div>
@@ -58,17 +59,17 @@ function TarjetaProducto({ producto, openMenuId, onToggleMenu, onEliminar }) {
   const navigate = useNavigate();
   const imagenUrl = producto.imagenes?.[0] || 'https://via.placeholder.com/400';
   const isMenuOpen = openMenuId === `prod-${producto._id}`;
-
   return (
     <div className="model-card product-card">
       <div className="image-container">
         <img src={imagenUrl} alt={producto.nombre} className="model-image" />
       </div>
-      <div className="card-footer" style={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
-        {/* Div vacío para mantener la estructura y empujar los puntos a la derecha */}
-        <div className="card-stats"></div> 
-        
-        <div className="kebab-container" style={{ flexGrow: 0 }}>
+      <div className="card-footer">
+        <div className="card-stats">
+          <span className="stat"><BiHeart size={18} /> {producto.likes || 0}</span>
+          <span className="stat"><BiCommentDetail size={18} /> {producto.comentarios?.length || 0}</span>
+        </div>
+        <div className="kebab-container">
           <button className="kebab-dot-btn" onClick={() => onToggleMenu(`prod-${producto._id}`)}>
             <BiDotsHorizontalRounded size={24} />
           </button>

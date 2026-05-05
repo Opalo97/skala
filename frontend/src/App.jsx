@@ -19,6 +19,7 @@ import Guardados from './pages/Guardados'
 import Filtros from './pages/Filtros'
 import CrearInspiracion from './pages/CrearInspiracion'
 import MisModelos from './pages/MisModelos'
+import EditarInspiracion from './pages/EditarInspiracion'
 import EditarProducto from './pages/EditarProducto'
 import ColeccionesDestacadas from './pages/ColeccionesDestacadas'
 import ListasDestacadas from './pages/ListasDestacadas'
@@ -40,6 +41,7 @@ function App() {
           <Route path="/buscar" element={<Buscar />} />
           <Route path="/perfil" element={<Perfil />} />
           <Route path="/mis-modelos" element={<MisModelos />} />
+          <Route path="/editar-inspiracion/:id" element={<EditarInspiracion />} />
           <Route path="/editar-producto/:id" element={<EditarProducto />} />
           <Route path="/guardados" element={<Guardados />} />
           <Route path="/colecciones-destacadas" element={<ColeccionesDestacadas />} />

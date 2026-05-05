@@ -156,6 +156,19 @@
   gap: 15px;
 }
 
+/* Asegurar que en product-card los iconos quedan a la izquierda y el menú a la derecha */
+.model-card.product-card .card-footer {
+  width: 100%; /* ocupa todo el ancho de la tarjeta */
+  justify-content: space-between; /* iconos a la izquierda, kebab a la derecha */
+}
+.model-card.product-card .card-stats {
+  justify-content: flex-start;
+  align-items: center;
+}
+.model-card.product-card .kebab-container {
+  justify-content: flex-end;
+}
+
 .stat {
   display: flex;
   align-items: center;
@@ -258,4 +271,15 @@
 
 .product-card .model-image {
   mix-blend-mode: multiply;
+}
+
+/* Quitar el recuadro blanco/padding heredado de .product-card en otros módulos
+   para que los muebles luzcan igual que las inspiraciones (sin fondo). */
+.model-card.product-card {
+  background: transparent !important;
+  padding: 0 !important;
+}
+
+.model-card.product-card .model-image {
+  mix-blend-mode: normal !important;
 }

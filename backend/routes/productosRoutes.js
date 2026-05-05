@@ -15,7 +15,11 @@ router.post('/', upload.fields([
 	{ name: 'videos', maxCount: 3 },
 	{ name: 'modelo', maxCount: 1 }
 ]), productoController.crearProducto);
-router.put('/:id', upload.none(), productoController.actualizarProducto);
+router.put('/:id', upload.fields([
+	{ name: 'fotos', maxCount: 5 },
+	{ name: 'videos', maxCount: 3 },
+	{ name: 'modelo', maxCount: 1 }
+]), productoController.actualizarProducto);
 router.delete('/:id', productoController.eliminarProducto);
 
 module.exports = router;
