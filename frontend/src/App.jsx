@@ -15,6 +15,8 @@ import PrivacyPolicy from './pages/PrivacyPolicy'
 import InspiracionDetail from './pages/InspiracionDetail'
 import Buscar from './pages/Buscar'
 import Perfil from './pages/Perfil'
+import PerfilUsuario from './pages/PerfilUsuario'
+import ModelosUsuario from './pages/ModelosUsuario'
 import Guardados from './pages/Guardados'
 import Filtros from './pages/Filtros'
 import CrearInspiracion from './pages/CrearInspiracion'
@@ -40,6 +42,8 @@ function App() {
           <Route path="/inspiracion/:id" element={<InspiracionDetail />} />
           <Route path="/buscar" element={<Buscar />} />
           <Route path="/perfil" element={<Perfil />} />
+          <Route path="/perfil/:id" element={<PerfilUsuario />} />
+          <Route path="/modelos-usuario/:id" element={<ModelosUsuario />} />
           <Route path="/mis-modelos" element={<MisModelos />} />
           <Route path="/editar-inspiracion/:id" element={<EditarInspiracion />} />
           <Route path="/editar-producto/:id" element={<EditarProducto />} />

@@ -1,0 +1,199 @@
+:root {
+  --bg-beige: #fdf5e6;
+  --text-brown: #331505;
+  --text-light: #666;
+  --orange-btn: #ba6436;
+  --orange-btn-hover: #a1542a;
+  --menu-brown: #8f4618;
+}
+
+.modelos-usuario-container {
+  padding: 40px 60px;
+  background-color: var(--bg-beige);
+  min-height: 100vh;
+  color: var(--text-brown);
+}
+
+/* --- CABECERA DE PERFIL --- */
+.perfil-info-header-modelos {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 50px;
+}
+
+.avatar-perfil {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.perfil-textos h2 {
+  margin: 0 0 5px 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-brown);
+}
+
+.perfil-textos p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--text-light);
+}
+
+/* --- SECCIONES COMUNES --- */
+.modelos-section {
+  margin-bottom: 60px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 25px;
+}
+
+.header-titles h1 {
+  font-size: 32px;
+  margin: 0 0 10px 0;
+  font-weight: 800;
+  color: var(--text-brown);
+}
+
+.tabs {
+  display: flex;
+  gap: 20px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-light);
+}
+
+.tab {
+  cursor: pointer;
+}
+
+.tab.active {
+  color: var(--text-brown);
+  border-bottom: 2px solid var(--text-brown);
+  padding-bottom: 2px;
+}
+
+/* --- SCROLL HORIZONTAL --- */
+.horizontal-scroll-container {
+  display: flex;
+  gap: 25px;
+  overflow-x: auto;
+  padding-bottom: 20px;
+  scroll-behavior: smooth;
+  /* Ocultar barra de scroll para limpieza */
+  scrollbar-width: none; /* Firefox */
+}
+.horizontal-scroll-container::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+/* --- TARJETAS --- */
+.model-card {
+  flex: 0 0 280px; /* Ancho fijo para que no se encojan */
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s ease;
+}
+
+.model-card:hover {
+  transform: scale(1.02);
+}
+
+.image-container {
+  width: 100%;
+  height: 280px;
+  border-radius: 32px;
+  overflow: hidden;
+}
+
+.model-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Asegurar que todos los títulos h1 cojan el color marrón */
+.section-header h1 {
+  font-size: 32px;
+  margin: 0 0 10px 0;
+  font-weight: 800;
+  color: var(--text-brown);
+}
+
+/* Footer de la tarjeta */
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px 0 15px;
+  color: var(--text-brown);
+}
+
+.card-stats {
+  display: flex;
+  gap: 15px;
+}
+
+.stat {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Mensajes de estado */
+.status-msg {
+  text-align: center;
+  font-size: 18px;
+  margin-top: 50px;
+}
+
+.status-msg.error {
+  color: #e74c3c;
+}
+
+.empty-msg {
+  color: var(--text-light);
+  font-size: 15px;
+}
+
+@media (max-width: 768px) {
+  .modelos-usuario-container {
+    padding: 20px;
+  }
+
+  .perfil-info-header-modelos {
+    margin-bottom: 30px;
+  }
+
+  .header-titles h1 {
+    font-size: 24px;
+  }
+
+  .model-card {
+    flex: 0 0 200px;
+  }
+
+  .image-container {
+    height: 200px;
+  }
+}
+
+.model-card.product-card {
+  background: transparent !important;
+  padding: 0 !important;
+}
+
+.model-card.product-card .model-image {
+  mix-blend-mode: normal !important;
+}
