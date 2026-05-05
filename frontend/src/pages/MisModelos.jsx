@@ -173,10 +173,7 @@ export default function MisModelos() {
         <div className="section-header">
           <div className="header-titles">
             <h1>Mis Inspiraciones</h1>
-            <div className="tabs">
-              <span className="tab active">Publicados</span>
-              <span className="tab">Borradores</span>
-            </div>
+            
           </div>
           <Link to="/crear-inspiracion" className="btn-crear-accion">
             + Crear Inspiración

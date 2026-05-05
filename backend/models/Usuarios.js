@@ -9,6 +9,7 @@ const UsuarioSchema = new mongoose.Schema({
   bio: { type: String, default: "" },
   seguidores: { type: Number, default: 0 },
   seguidos: { type: Number, default: 0 },
+  seguidoresList: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Usuario' }],
   favoritosInspiraciones: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: "Inspiracion"

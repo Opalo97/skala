@@ -210,14 +210,14 @@ export default function Perfil() {
             </div>
 
             <div className="perfil-stats-horizontal centered">
-              <div className="stat-item">
+              <button className="stat-item stat-item-btn" onClick={() => navigate(`/seguidores/${usuario._id}`)}>
                 <span className="stat-value">{usuario.seguidores || 0}</span>
                 <span className="stat-label">seguidores</span>
-              </div>
-              <div className="stat-item">
+              </button>
+              <button className="stat-item stat-item-btn" onClick={() => navigate(`/seguidos/${usuario._id}`)}>
                 <span className="stat-value">{usuario.seguidos || 0}</span>
                 <span className="stat-label">seguidos</span>
-              </div>
+              </button>
             </div>
           </div>
         </div>

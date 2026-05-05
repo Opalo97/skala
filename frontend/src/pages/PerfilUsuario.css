@@ -126,6 +126,48 @@
   min-height: 160px;
 }
 
+/* Bloque nombre + botón seguir */
+.name-follow-block {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 16px;
+  margin-bottom: 4px;
+}
+
+.btn-seguir {
+  flex-shrink: 0;
+  padding: 10px 22px;
+  border-radius: 50px;
+  border: none;
+  background-color: #E8943A;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+  white-space: nowrap;
+}
+
+.btn-seguir:hover:not(:disabled) {
+  background-color: #d07e2a;
+  transform: scale(1.04);
+}
+
+.btn-seguir.siguiendo {
+  background-color: #813405;
+}
+
+.btn-seguir.siguiendo:hover:not(:disabled) {
+  background-color: #5e2503;
+}
+
+.btn-seguir:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
 @media (max-width: 480px) {
   .perfil-card {
     padding: 24px 16px;
@@ -150,5 +192,10 @@
 
   .name-block {
     text-align: center;
+  }
+
+  .name-follow-block {
+    flex-direction: column;
+    align-items: center;
   }
 }

@@ -33,5 +33,10 @@ router.put('/:id/actualizar-foto', upload.single('fotoPerfil'), usuarioControlle
 router.put('/:id/favorito-producto', usuarioController.toggleFavoritoProducto);
 // Toggle favorito inspiración
 router.put('/:id/favorito-inspiracion', usuarioController.toggleFavoritoInspiracion);
+// Seguir / dejar de seguir usuario
+router.put('/:id/seguir', usuarioController.toggleSeguir);
+// Listas de seguidores y seguidos
+router.get('/:id/seguidores', usuarioController.obtenerSeguidores);
+router.get('/:id/seguidos', usuarioController.obtenerSeguidos);
 
 module.exports = router;

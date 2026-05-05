@@ -215,6 +215,86 @@ const toggleFavoritoProducto = async (req, res) => {
     }
 };
 
+// Acción: Seguir o dejar de seguir a un usuario
+const toggleSeguir = async (req, res) => {
+    try {
+        const objetivoId = req.params.id;
+        const { seguidorId } = req.body;
+
+        if (!seguidorId) return res.status(400).json({ mensaje: 'Falta seguidorId' });
+        if (String(objetivoId) === String(seguidorId)) {
+            return res.status(400).json({ mensaje: 'No puedes seguirte a ti mismo' });
+        }
+
+        const objetivo = await Usuario.findById(objetivoId);
+        if (!objetivo) return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+
+        const yaSigue = objetivo.seguidoresList.map(String).includes(String(seguidorId));
+
+        if (yaSigue) {
+            await Usuario.findByIdAndUpdate(objetivoId, {
+                $pull: { seguidoresList: seguidorId },
+                $inc: { seguidores: -1 }
+            });
+            await Usuario.findByIdAndUpdate(seguidorId, { $inc: { seguidos: -1 } });
+        } else {
+            await Usuario.findByIdAndUpdate(objetivoId, {
+                $addToSet: { seguidoresList: seguidorId },
+                $inc: { seguidores: 1 }
+            });
+            await Usuario.findByIdAndUpdate(seguidorId, { $inc: { seguidos: 1 } });
+        }
+
+        const nuevoContador = objetivo.seguidores + (yaSigue ? -1 : 1);
+        res.status(200).json({ siguiendo: !yaSigue, seguidores: nuevoContador });
+    } catch (error) {
+        res.status(500).json({ mensaje: 'Error al actualizar seguimiento', error });
+    }
+};
+
+// Acción: Obtener lista de seguidores de un usuario (con datos básicos)
+const obtenerSeguidores = async (req, res) => {
+    try {
+        const usuario = await Usuario.findById(req.params.id)
+            .populate('seguidoresList', 'username fotoPerfil _id');
+        if (!usuario) return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+        res.status(200).json({
+            usuario: {
+                _id: usuario._id,
+                username: usuario.username,
+                seguidores: usuario.seguidores,
+                seguidos: usuario.seguidos,
+            },
+            lista: usuario.seguidoresList,
+        });
+    } catch (error) {
+        res.status(500).json({ mensaje: 'Error al obtener seguidores', error });
+    }
+};
+
+// Acción: Obtener lista de usuarios a los que sigue un usuario
+const obtenerSeguidos = async (req, res) => {
+    try {
+        const usuario = await Usuario.findById(req.params.id);
+        if (!usuario) return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+        const lista = await Usuario.find(
+            { seguidoresList: req.params.id },
+            'username fotoPerfil _id'
+        );
+        res.status(200).json({
+            usuario: {
+                _id: usuario._id,
+                username: usuario.username,
+                seguidores: usuario.seguidores,
+                seguidos: usuario.seguidos,
+            },
+            lista,
+        });
+    } catch (error) {
+        res.status(500).json({ mensaje: 'Error al obtener seguidos', error });
+    }
+};
+
 module.exports = {
     obtenerUsuarios,
     crearUsuario,
@@ -223,5 +303,8 @@ module.exports = {
     actualizarFotoPerfil,
     actualizarUsuario,
     toggleFavoritoProducto,
-    toggleFavoritoInspiracion
+    toggleFavoritoInspiracion,
+    toggleSeguir,
+    obtenerSeguidores,
+    obtenerSeguidos,
 };
