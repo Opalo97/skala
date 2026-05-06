@@ -30,13 +30,13 @@ export default function FavModal({ isOpen, onClose }) {
 
           <div className="auth-modal-buttons">
             <button className="auth-btn register-btn" onClick={goToColecciones}>
-              <BiPlus size={20} />
-              Colecciones destacadas
+              <BiHeart size={20} />
+              Inspiraciones favoritas
             </button>
 
             <button className="auth-btn login-btn" onClick={goToListas}>
-              <BiHeart size={20} />
-              Listas destacadas
+              <BiPlus size={20} />
+              Productos favoritos
             </button>
           </div>
         </div>
