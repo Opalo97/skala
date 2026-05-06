@@ -100,13 +100,25 @@
   flex-direction: column;
 }
 
+.col-fav-item a {
+  display: block;
+  flex: 1;
+  min-height: 0;
+  border-radius: 16px;
+  overflow: hidden;
+  transition: transform 0.2s ease;
+}
+
+.col-fav-item a:hover {
+  transform: scale(1.02);
+}
+
 .col-fav-item .inspiracion-imagen {
   width: 100%;
-  flex: 1;
+  height: 100%;
   object-fit: cover;
   border-radius: 16px;
   display: block;
-  min-height: 0;
 }
 
 .col-fav-menu-row {
@@ -204,6 +216,8 @@
   gap: 3px;
   border-radius: 20px 20px 0 0;
   overflow: hidden;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .col-thumb-main {

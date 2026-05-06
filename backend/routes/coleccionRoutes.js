@@ -4,6 +4,7 @@ const coleccionController = require('../controllers/coleccionController');
 
 // Rutas de Colecciones
 router.get('/usuario/:usuarioId', coleccionController.obtenerColeccionesPorUsuario);
+router.get('/:id', coleccionController.obtenerColeccionPorId);
 router.post('/', coleccionController.crearColeccion);
 router.put('/:id', coleccionController.actualizarColeccion); // PUT se usa para actualizar
 router.delete('/:id', coleccionController.eliminarColeccion);

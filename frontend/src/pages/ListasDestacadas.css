@@ -1,0 +1,52 @@
+/* Reutiliza todos los estilos base de ColeccionesDestacadas */
+@import './ColeccionesDestacadas.css';
+
+/* ── Ajustes específicos para productos ── */
+
+/* Tarjeta de favorito producto: no tiene aspect-ratio fijo (tiene nombre y precio debajo) */
+.col-fav-producto {
+  aspect-ratio: unset;
+}
+
+.col-fav-producto a {
+  flex: none;
+  border-radius: 16px;
+  overflow: hidden;
+  display: block;
+  transition: transform 0.2s ease;
+}
+
+.col-fav-producto a:hover {
+  transform: scale(1.02);
+}
+
+.col-fav-producto .inspiracion-imagen {
+  aspect-ratio: 1 / 1;
+  height: auto;
+  border-radius: 16px;
+}
+
+.col-prod-placeholder {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background-color: #f0e6d6;
+  border-radius: 16px;
+}
+
+.col-prod-nombre {
+  margin: 6px 4px 2px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.col-prod-precio {
+  margin: 0 4px;
+  font-size: 13px;
+  color: #8c4b14;
+  font-weight: 500;
+}

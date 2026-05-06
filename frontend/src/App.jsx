@@ -25,6 +25,8 @@ import EditarInspiracion from './pages/EditarInspiracion'
 import EditarProducto from './pages/EditarProducto'
 import ColeccionesDestacadas from './pages/ColeccionesDestacadas'
 import ListasDestacadas from './pages/ListasDestacadas'
+import ColeccionDetalle from './pages/ColeccionDetalle'
+import ListaDetalle from './pages/ListaDetalle'
 import ListaSeguidores from './pages/ListaSeguidores'
 import ListaSeguidos from './pages/ListaSeguidos'
 
@@ -51,7 +53,9 @@ function App() {
           <Route path="/editar-producto/:id" element={<EditarProducto />} />
           <Route path="/guardados" element={<Guardados />} />
           <Route path="/colecciones-destacadas" element={<ColeccionesDestacadas />} />
+          <Route path="/coleccion/:id" element={<ColeccionDetalle />} />
           <Route path="/listas-destacadas" element={<ListasDestacadas />} />
+          <Route path="/lista/:id" element={<ListaDetalle />} />
           <Route path="/filtros" element={<Filtros />} />
           <Route path="/seguidores/:id" element={<ListaSeguidores />} />
           <Route path="/seguidos/:id" element={<ListaSeguidos />} />

@@ -11,6 +11,17 @@ const obtenerColeccionesPorUsuario = async (req, res) => {
     }
 };
 
+// Obtener una colección por su ID
+const obtenerColeccionPorId = async (req, res) => {
+    try {
+        const coleccion = await Coleccion.findById(req.params.id).populate('inspiraciones');
+        if (!coleccion) return res.status(404).json({ mensaje: 'Colección no encontrada' });
+        res.status(200).json(coleccion);
+    } catch (error) {
+        res.status(500).json({ mensaje: 'Error al obtener la colección', error });
+    }
+};
+
 // Crear una nueva colección vacía o con datos iniciales
 const crearColeccion = async (req, res) => {
     try {
@@ -47,6 +58,7 @@ const eliminarColeccion = async (req, res) => {
 
 module.exports = {
     obtenerColeccionesPorUsuario,
+    obtenerColeccionPorId,
     crearColeccion,
     actualizarColeccion,
     eliminarColeccion

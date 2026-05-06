@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { Link } from 'react-router-dom'
 import { BiPlus, BiEdit, BiTrash } from 'react-icons/bi'
 import { BsThreeDots } from 'react-icons/bs'
 import { BiX } from 'react-icons/bi'
@@ -252,11 +253,13 @@ export default function ColeccionesDestacadas() {
               {favoritos.map(insp => (
                 <div key={insp._id} className="col-fav-item">
                   {insp.multimedia?.imagenes?.[0] && (
-                    <img
-                      src={insp.multimedia.imagenes[0]}
-                      alt={insp.nombre}
-                      className="inspiracion-imagen"
-                    />
+                    <Link to={`/inspiracion/${insp._id}`}>
+                      <img
+                        src={insp.multimedia.imagenes[0]}
+                        alt={insp.nombre}
+                        className="inspiracion-imagen"
+                      />
+                    </Link>
                   )}
                   <div className="col-fav-menu-row">
                     <button
@@ -302,7 +305,7 @@ export default function ColeccionesDestacadas() {
                 return (
                   <div key={col._id} className="col-card">
                     {/* Thumbnail collage */}
-                    <div className="col-thumb">
+                    <Link to={`/coleccion/${col._id}`} className="col-thumb">
                       <div className="col-thumb-main">
                         {imgs[0]
                           ? <img src={imgs[0]} alt="" />
@@ -323,7 +326,7 @@ export default function ColeccionesDestacadas() {
                           }
                         </div>
                       </div>
-                    </div>
+                    </Link>
 
                     {/* Info */}
                     <div className="col-card-info">

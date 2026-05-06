@@ -11,6 +11,17 @@ const obtenerListasPorUsuario = async (req, res) => {
     }
 };
 
+// Obtener una lista por su ID
+const obtenerListaPorId = async (req, res) => {
+    try {
+        const lista = await Lista.findById(req.params.id).populate('productos');
+        if (!lista) return res.status(404).json({ mensaje: 'Lista no encontrada' });
+        res.status(200).json(lista);
+    } catch (error) {
+        res.status(500).json({ mensaje: 'Error al obtener la lista', error });
+    }
+};
+
 // Crear una nueva lista
 const crearLista = async (req, res) => {
     try {
@@ -47,6 +58,7 @@ const eliminarLista = async (req, res) => {
 
 module.exports = {
     obtenerListasPorUsuario,
+    obtenerListaPorId,
     crearLista,
     actualizarLista,
     eliminarLista

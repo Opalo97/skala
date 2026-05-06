@@ -1,0 +1,302 @@
+/* ── Contenedor principal ── */
+.det-container {
+  padding: 32px 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* ── Botón volver ── */
+.det-back-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #8c4b14;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: inherit;
+  padding: 8px 0;
+  margin-bottom: 20px;
+  margin-left: 0;
+  width: fit-content;
+  transition: opacity 0.2s;
+}
+
+.det-back-btn:hover {
+  opacity: 0.7;
+}
+
+/* ── Overlay confirmación ── */
+.det-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* ── Modal de confirmación ── */
+.det-confirm-modal {
+  background: #fff;
+  border-radius: 20px;
+  padding: 32px 28px;
+  width: 90%;
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  animation: detSlideUp 0.2s ease-out;
+}
+
+@keyframes detSlideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.det-confirm-titulo {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.det-confirm-texto {
+  font-size: 14px;
+  color: #555;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.det-confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.det-btn-cancelar {
+  padding: 9px 20px;
+  border-radius: 30px;
+  border: 2px solid #fad1a1;
+  background: none;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  color: #1a1a1a;
+  font-family: inherit;
+  transition: background-color 0.2s;
+}
+
+.det-btn-cancelar:hover {
+  background-color: #fad1a1;
+}
+
+.det-btn-eliminar {
+  padding: 9px 20px;
+  border-radius: 30px;
+  border: none;
+  background-color: #c0392b;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  color: #fff;
+  font-family: inherit;
+  transition: background-color 0.2s;
+}
+
+.det-btn-eliminar:hover {
+  background-color: #a93226;
+}
+
+.det-header {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+
+.det-titulo {
+  font-size: 36px;
+  font-weight: 800;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.det-count {
+  font-size: 16px;
+  color: #888;
+  font-weight: 400;
+}
+
+.det-loading,
+.det-empty {
+  text-align: center;
+  color: #888;
+  font-size: 16px;
+  margin-top: 60px;
+}
+
+/* ── Grid inspiraciones (igual que Home) ── */
+.det-grid-insп {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+  grid-auto-flow: dense;
+}
+
+/* ── Item de inspiración ── */
+.det-insp-item {
+  position: relative;
+  border-radius: 16px;
+  overflow: visible;
+  aspect-ratio: 3 / 4;
+  display: flex;
+  flex-direction: column;
+}
+
+.det-insp-item img {
+  width: 100%;
+  flex: 1;
+  object-fit: cover;
+  border-radius: 16px;
+  display: block;
+  min-height: 0;
+  transition: transform 0.2s;
+}
+
+.det-insp-item img:hover {
+  transform: scale(1.02);
+}
+
+/* ── Grid productos ── */
+.det-grid-prod {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 20px;
+}
+
+/* ── Tarjeta de producto ── */
+.det-prod-card {
+  background: #fff;
+  border-radius: 20px;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
+}
+
+.det-prod-img-wrap {
+  aspect-ratio: 1 / 1;
+  border-radius: 20px 20px 0 0;
+  overflow: hidden;
+  background: #f8f3ee;
+}
+
+.det-prod-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.2s;
+}
+
+.det-prod-img-wrap img:hover {
+  transform: scale(1.04);
+}
+
+.det-prod-placeholder {
+  width: 100%;
+  height: 100%;
+  background: #f0e6d6;
+}
+
+.det-prod-info {
+  padding: 10px 12px 4px;
+}
+
+.det-prod-nombre {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0 0 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.det-prod-precio {
+  font-size: 13px;
+  color: #8c4b14;
+  font-weight: 500;
+  margin: 0;
+}
+
+/* ── Fila del menú "..." ── */
+.det-menu-row {
+  display: flex;
+  justify-content: flex-end;
+  padding: 4px 4px 0;
+  position: relative;
+}
+
+/* ── Botón tres puntos ── */
+.det-dots-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #8c4b14;
+  padding: 4px 6px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.15s;
+}
+
+.det-dots-btn:hover {
+  background-color: rgba(140, 75, 20, 0.12);
+}
+
+/* ── Dropdown ── */
+.det-dropdown {
+  position: absolute;
+  top: 28px;
+  right: 0;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  z-index: 100;
+  min-width: 180px;
+  overflow: hidden;
+  animation: detFadeIn 0.15s ease;
+}
+
+@keyframes detFadeIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.det-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 11px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #c0392b;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  transition: background-color 0.15s;
+}
+
+.det-dropdown-item:hover {
+  background-color: #fff0f0;
+}

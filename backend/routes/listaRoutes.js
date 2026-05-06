@@ -4,6 +4,7 @@ const listaController = require('../controllers/listaController');
 
 // Rutas de Listas
 router.get('/usuario/:usuarioId', listaController.obtenerListasPorUsuario);
+router.get('/:id', listaController.obtenerListaPorId);
 router.post('/', listaController.crearLista);
 router.put('/:id', listaController.actualizarLista);
 router.delete('/:id', listaController.eliminarLista);
