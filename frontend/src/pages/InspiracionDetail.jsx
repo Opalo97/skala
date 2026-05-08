@@ -160,6 +160,17 @@ export default function InspiracionDetail() {
               </button>
             </div>
 
+            <div className="insp-meta-section">
+              <div className="insp-meta-item">
+                <p className="insp-products-label">Zona de la casa</p>
+                <span className="insp-meta-tag">{inspiracion.zonaCasa}</span>
+              </div>
+              <div className="insp-meta-item">
+                <p className="insp-products-label">Estilo de decoración</p>
+                <span className="insp-meta-tag">{inspiracion.categoriaDecoracion}</span>
+              </div>
+            </div>
+
             <div className="insp-products-section">
               <p className="insp-products-label">Productos de la inspiración</p>
               <div className="insp-products-list">

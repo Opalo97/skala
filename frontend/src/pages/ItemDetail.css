@@ -110,6 +110,38 @@
   cursor: pointer;
 }
 
+/* Botón Ver modelo 3D */
+.modelo3d-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background-color: #8c4b14;
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+  width: fit-content;
+}
+
+.modelo3d-btn:hover {
+  background-color: #6b3610;
+  transform: translateY(-2px);
+}
+
+/* Modal visor 3D */
+.modelo3d-modal {
+  background-color: #fef5ea;
+  border-radius: 24px;
+  padding: 32px;
+  width: 90%;
+  max-width: 800px;
+  position: relative;
+}
+
 /* Modal galería completa */
 .galeria-overlay {
   position: fixed;

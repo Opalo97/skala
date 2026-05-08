@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { BiHeart, BiSolidHeart } from "react-icons/bi";
+import { TbCube } from "react-icons/tb";
 import axios from "axios";
 import "./ItemDetail.css";
 import API_BASE_URL from '../config/api';
@@ -13,6 +14,7 @@ export default function ItemDetail() {
   const [modalGaleriaAbierto, setModalGaleriaAbierto] = useState(false);
   const [esFavorito, setEsFavorito] = useState(false);
   const [inspiracionesRelacionadas, setInspiracionesRelacionadas] = useState([]);
+  const [modalModeloAbierto, setModalModeloAbierto] = useState(false);
 
   useEffect(() => {
     const fetchProducto = async () => {
@@ -29,8 +31,7 @@ export default function ItemDetail() {
           setProducto(prod);
           const primerMedia =
             prod.imagenes?.[0] ? { type: 'image', url: prod.imagenes[0] } :
-            prod.videos?.[0]   ? { type: 'video', url: prod.videos[0] }   :
-            prod.modelo3d       ? { type: 'model', url: prod.modelo3d }    : null;
+            prod.videos?.[0]   ? { type: 'video', url: prod.videos[0] }   : null;
           if (primerMedia) setMediaActual(primerMedia);
         }
         setInspiracionesRelacionadas(resInsp.data || []);
@@ -67,7 +68,6 @@ if (cargando) return <div className="p-10 text-center">Cargando producto...</div
   const allMedia = [
     ...(producto.imagenes || []).map(url => ({ type: 'image', url })),
     ...(producto.videos   || []).map(url => ({ type: 'video', url })),
-    ...(producto.modelo3d      ? [{ type: 'model', url: producto.modelo3d }] : []),
   ];
   const totalMedia    = allMedia.length;
   const mostrarColumna = totalMedia > 1;
@@ -159,6 +159,13 @@ if (cargando) return <div className="p-10 text-center">Cargando producto...</div
               Ir a la tienda del vendedor
             </a>
             
+            {producto.modelo3d && (
+              <button className="modelo3d-btn" onClick={() => setModalModeloAbierto(true)}>
+                <TbCube size={20} />
+                Ver modelo 3D
+              </button>
+            )}
+
             <p className="vendor-text">Vendedor: {producto.vendedor || 'Desconocido'}</p>
 
             <div className="specs-container">
@@ -221,6 +228,25 @@ if (cargando) return <div className="p-10 text-center">Cargando producto...</div
         )}
 
       </div>
+
+      {/* Modal visor 3D */}
+      {modalModeloAbierto && (
+        <div className="galeria-overlay" onClick={() => setModalModeloAbierto(false)}>
+          <div className="modelo3d-modal" onClick={e => e.stopPropagation()}>
+            <button className="galeria-modal-close" onClick={() => setModalModeloAbierto(false)}>×</button>
+            <h3 className="galeria-modal-titulo">Vista 3D — {producto.nombre}</h3>
+            {/* eslint-disable-next-line */}
+            <model-viewer
+              src={producto.modelo3d}
+              alt={producto.nombre}
+              camera-controls
+              auto-rotate
+              shadow-intensity="1"
+              style={{ width: '100%', height: '500px', borderRadius: '16px', background: '#f5ece0' }}
+            />
+          </div>
+        </div>
+      )}
 
       {/* Modal galería completa (solo accesible con 5+ multimedias) */}
       {modalGaleriaAbierto && (

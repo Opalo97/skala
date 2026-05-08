@@ -148,6 +148,31 @@
   transform: scale(1.1);
 }
 
+/* ── Meta (zona + estilo) ── */
+.insp-meta-section {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.insp-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+}
+
+.insp-meta-tag {
+  display: inline-block;
+  background-color: #fad1a1;
+  color: #8c4b14;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 6px 16px;
+  border-radius: 50px;
+}
+
 /* ── Productos ── */
 .insp-products-label {
   font-size: 15px;
