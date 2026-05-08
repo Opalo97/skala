@@ -82,26 +82,61 @@
   transform: translateY(-2px);
 }
 
-/* --- SCROLL HORIZONTAL --- */
-.horizontal-scroll-container {
-  display: flex;
+/* --- GRID --- */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 25px;
-  overflow-x: auto;
-  padding-bottom: 20px; /* Para que la sombra y el menú no se corten */
-  scroll-behavior: smooth;
-  /* Ocultar barra de scroll para limpieza */
-  scrollbar-width: none; /* Firefox */
-}
-.horizontal-scroll-container::-webkit-scrollbar {
-  display: none; /* Chrome/Safari */
+  padding-bottom: 10px;
 }
 
 /* --- TARJETAS --- */
 .model-card {
-  flex: 0 0 280px; /* Ancho fijo para que no se encojan */
   display: flex;
   flex-direction: column;
   position: relative;
+}
+
+/* --- PAGINACIÓN --- */
+.paginacion {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 30px;
+}
+
+.pag-btn {
+  background: none;
+  border: 2px solid var(--text-brown);
+  color: var(--text-brown);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.pag-btn:hover:not(:disabled) {
+  background-color: var(--orange-btn);
+  border-color: var(--orange-btn);
+  color: white;
+}
+
+.pag-btn:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.pag-btn.activo {
+  background-color: var(--orange-btn);
+  border-color: var(--orange-btn);
+  color: white;
 }
 
 .image-container {

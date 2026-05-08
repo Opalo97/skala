@@ -114,6 +114,7 @@
 .modelo3d-btn {
   display: flex;
   align-items: center;
+  margin: 0 auto;
   gap: 8px;
   padding: 12px 24px;
   background-color: #8c4b14;

@@ -208,12 +208,14 @@ const actualizarProducto = async (req, res) => {
         const productoId = req.params.id;
         const files = req.files || {};
         const fotosFiles = files.fotos || [];
+        const videosFiles = files.videos || [];
+        const modeloFiles = files.modelo || [];
 
         const productoExistente = await Producto.findById(productoId);
         if (!productoExistente) {
             return res.status(404).json({ mensaje: 'Producto no encontrado' });
         }
-        
+
         // Parsear especificaciones si vienen como string
         let especificaciones = req.body.especificaciones || {};
         if (typeof especificaciones === 'string') {
@@ -245,13 +247,42 @@ const actualizarProducto = async (req, res) => {
             return res.status(400).json({ mensaje: 'Máximo 5 imágenes permitidas por producto' });
         }
 
+        // Videos actuales que el frontend decide conservar
+        let videosActuales = productoExistente.videos || [];
+        if (req.body.videosActuales) {
+            if (typeof req.body.videosActuales === 'string') {
+                try { videosActuales = JSON.parse(req.body.videosActuales); } catch (e) { videosActuales = []; }
+            } else if (Array.isArray(req.body.videosActuales)) {
+                videosActuales = req.body.videosActuales;
+            }
+        }
+
+        const videosNuevos = [];
+        for (const v of videosFiles) {
+            const resUp = await uploadBuffer(v.buffer, { folder: 'skala/muebles', resource_type: 'video' });
+            videosNuevos.push(resUp.secure_url);
+        }
+        const videos = [...videosActuales, ...videosNuevos];
+
+        // Modelo 3D: si se sube uno nuevo lo reemplaza, si no se conserva el existente
+        let modelo3d = productoExistente.modelo3d || '';
+        if (req.body.eliminarModelo3d === 'true') {
+            modelo3d = '';
+        }
+        if (modeloFiles.length > 0) {
+            const resUp = await uploadBuffer(modeloFiles[0].buffer, { folder: 'skala/muebles', resource_type: 'raw' });
+            modelo3d = resUp.secure_url;
+        }
+
         const datosActualizados = {
             nombre: req.body.nombre,
             linkCompra: req.body.linkCompra || '',
             precio: parseFloat(req.body.precio) || 0,
             vendedor: req.body.vendedor || '',
             especificaciones,
-            imagenes
+            imagenes,
+            videos,
+            modelo3d
         };
 
         const productoActualizado = await Producto.findByIdAndUpdate(

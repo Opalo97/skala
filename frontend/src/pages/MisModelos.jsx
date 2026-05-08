@@ -2,10 +2,11 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import API_BASE_URL from '../config/api';
-import { BiHeart, BiCommentDetail, BiDotsHorizontalRounded, BiEdit, BiTrash } from 'react-icons/bi';
+import { BiHeart, BiCommentDetail, BiDotsHorizontalRounded, BiEdit, BiTrash, BiChevronLeft, BiChevronRight } from 'react-icons/bi';
 import './MisModelos.css';
 
-// Componente para el menú flotante tipo "bocadillo" (Kebab Menu)
+const ITEMS_POR_PAGINA = 6;
+
 function MenuOpciones({ isOpen, onClose, onEdit, onDelete }) {
   if (!isOpen) return null;
 
@@ -43,8 +44,8 @@ function TarjetaInspiracion({ inspiracion, openMenuId, onToggleMenu, onEliminar 
           <button className="kebab-dot-btn" onClick={() => onToggleMenu(`insp-${inspiracion._id}`)}>
             <BiDotsHorizontalRounded size={24} />
           </button>
-          <MenuOpciones 
-            isOpen={isMenuOpen} 
+          <MenuOpciones
+            isOpen={isMenuOpen}
             onClose={() => onToggleMenu(null)}
             onEdit={() => navigate(`/editar-inspiracion/${inspiracion._id}`)}
             onDelete={() => onEliminar(inspiracion._id, 'inspiracion')}
@@ -73,8 +74,8 @@ function TarjetaProducto({ producto, openMenuId, onToggleMenu, onEliminar }) {
           <button className="kebab-dot-btn" onClick={() => onToggleMenu(`prod-${producto._id}`)}>
             <BiDotsHorizontalRounded size={24} />
           </button>
-          <MenuOpciones 
-            isOpen={isMenuOpen} 
+          <MenuOpciones
+            isOpen={isMenuOpen}
             onClose={() => onToggleMenu(null)}
             onEdit={() => navigate(`/editar-producto/${producto._id}`)}
             onDelete={() => onEliminar(producto._id, 'producto')}
@@ -85,15 +86,47 @@ function TarjetaProducto({ producto, openMenuId, onToggleMenu, onEliminar }) {
   );
 }
 
+function Paginacion({ paginaActual, totalPaginas, onCambiar }) {
+  if (totalPaginas <= 1) return null;
+
+  return (
+    <div className="paginacion">
+      <button
+        className="pag-btn"
+        onClick={() => onCambiar(paginaActual - 1)}
+        disabled={paginaActual === 1}
+      >
+        <BiChevronLeft size={20} />
+      </button>
+      {Array.from({ length: totalPaginas }, (_, i) => i + 1).map(num => (
+        <button
+          key={num}
+          className={`pag-btn pag-num${paginaActual === num ? ' activo' : ''}`}
+          onClick={() => onCambiar(num)}
+        >
+          {num}
+        </button>
+      ))}
+      <button
+        className="pag-btn"
+        onClick={() => onCambiar(paginaActual + 1)}
+        disabled={paginaActual === totalPaginas}
+      >
+        <BiChevronRight size={20} />
+      </button>
+    </div>
+  );
+}
+
 export default function MisModelos() {
   const [usuario, setUsuario] = useState(null);
   const [misInspiraciones, setMisInspiraciones] = useState([]);
   const [misProductos, setMisProductos] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
-  
-  // Estado para controlar qué menú de los 3 puntitos está abierto
   const [openMenuId, setOpenMenuId] = useState(null);
+  const [paginaInsp, setPaginaInsp] = useState(1);
+  const [paginaProd, setPaginaProd] = useState(1);
 
   useEffect(() => {
     const userId = localStorage.getItem('usuarioId');
@@ -130,15 +163,25 @@ export default function MisModelos() {
 
   const handleEliminar = async (id, tipo) => {
     if (window.confirm(`¿Estás seguro de que quieres eliminar est${tipo === 'inspiracion' ? 'a' : 'e'} ${tipo}?`)) {
-      setOpenMenuId(null); // Cierra el menú
+      setOpenMenuId(null);
       try {
         const endpoint = tipo === 'inspiracion' ? 'inspiraciones' : 'productos';
         await axios.delete(`${API_BASE_URL}/api/${endpoint}/${id}`);
-        
+
         if (tipo === 'inspiracion') {
-          setMisInspiraciones(prev => prev.filter(item => item._id !== id));
+          setMisInspiraciones(prev => {
+            const updated = prev.filter(item => item._id !== id);
+            const totalPags = Math.ceil(updated.length / ITEMS_POR_PAGINA);
+            if (paginaInsp > totalPags && totalPags > 0) setPaginaInsp(totalPags);
+            return updated;
+          });
         } else {
-          setMisProductos(prev => prev.filter(item => item._id !== id));
+          setMisProductos(prev => {
+            const updated = prev.filter(item => item._id !== id);
+            const totalPags = Math.ceil(updated.length / ITEMS_POR_PAGINA);
+            if (paginaProd > totalPags && totalPags > 0) setPaginaProd(totalPags);
+            return updated;
+          });
         }
       } catch (error) {
         console.error(error);
@@ -147,19 +190,30 @@ export default function MisModelos() {
     }
   };
 
+  const totalPagsInsp = Math.ceil(misInspiraciones.length / ITEMS_POR_PAGINA);
+  const totalPagsProd = Math.ceil(misProductos.length / ITEMS_POR_PAGINA);
+
+  const inspPagina = misInspiraciones.slice(
+    (paginaInsp - 1) * ITEMS_POR_PAGINA,
+    paginaInsp * ITEMS_POR_PAGINA
+  );
+  const prodPagina = misProductos.slice(
+    (paginaProd - 1) * ITEMS_POR_PAGINA,
+    paginaProd * ITEMS_POR_PAGINA
+  );
+
   if (cargando) return <div className="mis-modelos-container"><p className="status-msg">Cargando...</p></div>;
   if (error) return <div className="mis-modelos-container"><p className="status-msg error">{error}</p></div>;
 
   return (
     <div className="mis-modelos-container">
-      
-      {/* CABECERA DEL PERFIL */}
+
       {usuario && (
         <header className="perfil-info-header-mis-modelos">
-          <img 
-            src={usuario.fotoPerfil || 'https://res.cloudinary.com/skala/image/upload/v1777538122/foto_perfil_bmu1ge.jpg'} 
-            alt={usuario.username} 
-            className="avatar-perfil" 
+          <img
+            src={usuario.fotoPerfil || 'https://res.cloudinary.com/skala/image/upload/v1777538122/foto_perfil_bmu1ge.jpg'}
+            alt={usuario.username}
+            className="avatar-perfil"
           />
           <div className="perfil-textos">
             <h2>{usuario.username}</h2>
@@ -173,7 +227,6 @@ export default function MisModelos() {
         <div className="section-header">
           <div className="header-titles">
             <h1>Mis Inspiraciones</h1>
-            
           </div>
           <Link to="/crear-inspiracion" className="btn-crear-accion">
             + Crear Inspiración
@@ -183,17 +236,24 @@ export default function MisModelos() {
         {misInspiraciones.length === 0 ? (
           <p className="empty-msg">No has subido ninguna inspiración.</p>
         ) : (
-          <div className="horizontal-scroll-container">
-            {misInspiraciones.map(insp => (
-              <TarjetaInspiracion 
-                key={insp._id} 
-                inspiracion={insp} 
-                openMenuId={openMenuId}
-                onToggleMenu={handleToggleMenu}
-                onEliminar={handleEliminar} 
-              />
-            ))}
-          </div>
+          <>
+            <div className="grid-container">
+              {inspPagina.map(insp => (
+                <TarjetaInspiracion
+                  key={insp._id}
+                  inspiracion={insp}
+                  openMenuId={openMenuId}
+                  onToggleMenu={handleToggleMenu}
+                  onEliminar={handleEliminar}
+                />
+              ))}
+            </div>
+            <Paginacion
+              paginaActual={paginaInsp}
+              totalPaginas={totalPagsInsp}
+              onCambiar={setPaginaInsp}
+            />
+          </>
         )}
       </section>
 
@@ -211,17 +271,24 @@ export default function MisModelos() {
         {misProductos.length === 0 ? (
           <p className="empty-msg">No has subido ningún mueble.</p>
         ) : (
-          <div className="horizontal-scroll-container">
-            {misProductos.map(prod => (
-              <TarjetaProducto 
-                key={prod._id} 
-                producto={prod} 
-                openMenuId={openMenuId}
-                onToggleMenu={handleToggleMenu}
-                onEliminar={handleEliminar} 
-              />
-            ))}
-          </div>
+          <>
+            <div className="grid-container">
+              {prodPagina.map(prod => (
+                <TarjetaProducto
+                  key={prod._id}
+                  producto={prod}
+                  openMenuId={openMenuId}
+                  onToggleMenu={handleToggleMenu}
+                  onEliminar={handleEliminar}
+                />
+              ))}
+            </div>
+            <Paginacion
+              paginaActual={paginaProd}
+              totalPaginas={totalPagsProd}
+              onCambiar={setPaginaProd}
+            />
+          </>
         )}
       </section>
     </div>
