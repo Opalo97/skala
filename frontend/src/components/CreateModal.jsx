@@ -18,20 +18,15 @@ export default function CreateModal({ isOpen, onClose }) {
   if (!isOpen) return null;
 
   return (
-    <>
-      {/* Overlay */}
-      <div className="modal-overlay" onClick={onClose} />
-      
-      {/* Modal */}
-      <div className="create-modal">
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="create-modal" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <h2>¿Qué deseas crear?</h2>
           <button className="modal-close" onClick={onClose}>✕</button>
         </div>
 
         <div className="modal-content">
-          {/* Opción 1: Crear Inspiración */}
-          <div 
+          <div
             className="create-option inspiration-option"
             onClick={handleCreateInspiracion}
           >
@@ -43,8 +38,7 @@ export default function CreateModal({ isOpen, onClose }) {
             <button className="option-button">Crear</button>
           </div>
 
-          {/* Opción 2: Subir Producto */}
-          <div 
+          <div
             className="create-option product-option"
             onClick={handleUploadProduct}
           >
@@ -57,6 +51,6 @@ export default function CreateModal({ isOpen, onClose }) {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
