@@ -34,7 +34,7 @@ export default function CreateModal({ isOpen, onClose }) {
               <BiPaint size={40} />
             </div>
             <h3>Crear Inspiración</h3>
-            <p>Comparte diseños, estilos y espacios que inspiren a otros</p>
+            <p>Crea y comparte diseños, estilos y espacios que inspiren a otros.</p>
             <button className="option-button">Crear</button>
           </div>
 
@@ -46,7 +46,7 @@ export default function CreateModal({ isOpen, onClose }) {
               <BiBox size={40} />
             </div>
             <h3>Subir Producto</h3>
-            <p>Vende tus productos y objetos en el marketplace</p>
+            <p>Sube productos y muebles que formarán parte de inspiraciones en el futuro.</p>
             <button className="option-button">Subir</button>
           </div>
         </div>

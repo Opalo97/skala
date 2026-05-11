@@ -58,6 +58,11 @@ export default function Home() {
             Productos
           </button>
         </div>
+        <p className="tab-subtitle">
+          {activeTab === 'inspiraciones'
+            ? 'Rincones creativos formados por los mejores productos escogidos.'
+            : 'Muebles y productos sueltos para componer tus inspiraciones.'}
+        </p>
       </div>
 
       {activeTab === 'inspiraciones' && (

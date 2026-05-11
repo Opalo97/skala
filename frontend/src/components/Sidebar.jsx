@@ -8,11 +8,11 @@ import FavModal from "./FavModal";
 
 const navItems = [
   { to: "/", label: "Inicio", Icon: BiHome },
-  { to: "/buscar", label: "Buscar", Icon: BiSearch },
-  { type: "create", label: "Crear", Icon: BiPlus },
+  { to: "/buscar", label: "Búsqueda", Icon: BiSearch },
+  { type: "create", label: "Subir o Crear ...", Icon: BiPlus },
   { type: "user", label: "Perfil", Icon: BiUser },
-  { to: "/guardados", label: "Guardados", Icon: BiHeart },
-  { to: "/filtros", label: "Filtros", Icon: BiSliderAlt },
+  { to: "/guardados", label: "Favoritos", Icon: BiHeart },
+  { to: "/filtros", label: "Configuración", Icon: BiSliderAlt },
 ];
 
 export default function Sidebar() {
@@ -66,7 +66,7 @@ export default function Sidebar() {
                 key="user"
                 className={`sidebar-item user-btn ${isUserIconActive() ? "active" : ""}`}
                 onClick={handleUserIconClick}
-                title={item.label}
+                aria-label={item.label} data-tooltip={item.label}
               >
                 <item.Icon size={28} />
               </button>
@@ -79,7 +79,7 @@ export default function Sidebar() {
                 key="create"
                 className="sidebar-item create-btn"
                 onClick={handleCreateClick}
-                title={item.label}
+                aria-label={item.label} data-tooltip={item.label}
               >
                 <item.Icon size={28} />
               </button>
@@ -93,7 +93,7 @@ export default function Sidebar() {
                 key={item.to}
                 className="sidebar-item"
                 onClick={handleGuardadosClick}
-                title={item.label}
+                aria-label={item.label} data-tooltip={item.label}
               >
                 <item.Icon size={28} />
               </button>
@@ -110,7 +110,7 @@ export default function Sidebar() {
                 }
                 return isActive ? "sidebar-item active" : "sidebar-item";
               }}
-              title={item.label}
+              aria-label={item.label} data-tooltip={item.label}
             >
               <item.Icon size={28} />
             </NavLink>
