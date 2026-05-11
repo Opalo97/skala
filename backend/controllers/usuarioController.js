@@ -126,7 +126,7 @@ const actualizarUsuario = async (req, res) => {
             return res.status(400).json({ mensaje: 'No se proporcionaron campos a actualizar' });
         }
 
-        const usuario = await Usuario.findByIdAndUpdate(usuarioId, updates, { new: true, runValidators: true });
+        const usuario = await Usuario.findByIdAndUpdate(usuarioId, updates, { returnDocument: 'after', runValidators: true });
         if (!usuario) return res.status(404).json({ mensaje: 'Usuario no encontrado' });
 
         res.status(200).json(usuario);
@@ -152,7 +152,7 @@ const actualizarFotoPerfil = async (req, res) => {
         const usuario = await Usuario.findByIdAndUpdate(
             usuarioId,
             { fotoPerfil: nuevaUrl },
-            { new: true }
+            { returnDocument: 'after' }
         );
 
         if (!usuario) {

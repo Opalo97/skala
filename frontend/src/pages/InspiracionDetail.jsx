@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react'
-import { useParams, Link } from 'react-router-dom'
+import { useParams, Link, useLocation } from 'react-router-dom'
 import { BiHeart, BiSolidHeart } from 'react-icons/bi'
 import { BsArrowRight } from 'react-icons/bs'
 import axios from 'axios'
 import './InspiracionDetail.css'
 import API_BASE_URL from '../config/api'
+import Breadcrumb from '../components/Breadcrumb'
 
 export default function InspiracionDetail() {
   const { id } = useParams()
+  const location = useLocation()
   const [inspiracion, setInspiracion] = useState(null)
   const [comentarios, setComentarios] = useState([])
   const [cargando, setCargando] = useState(true)
@@ -98,8 +100,14 @@ export default function InspiracionDetail() {
   const btnActivo      = totalMedia > 4
   const mediaEnMain    = mediaActual || allMedia[0] || { type: 'image', url: '' }
 
+  const nextCrumbs = [
+    ...(location.state?.breadcrumbs || [{ label: 'Inicio', to: '/' }]),
+    { label: inspiracion.nombre, to: `/inspiracion/${id}` }
+  ]
+
   return (
     <div className="insp-detail-page">
+      <Breadcrumb current={inspiracion.nombre} />
       <div className="insp-detail-container">
 
         {/* ── Fila superior: galería + info ── */}
@@ -179,6 +187,7 @@ export default function InspiracionDetail() {
                       <Link
                         key={prod._id || prod}
                         to={`/item/${prod._id || prod}`}
+                        state={{ breadcrumbs: nextCrumbs }}
                         className="insp-product-btn"
                       >
                         <span>{prod.nombre || 'Ver producto'}</span>
@@ -202,6 +211,7 @@ export default function InspiracionDetail() {
               {inspiracion.autor && (
                 <Link
                   to={`/perfil/${inspiracion.autor._id || inspiracion.autor}`}
+                  state={{ breadcrumbs: nextCrumbs }}
                   className="uploader-pill"
                 >
                   @{inspiracion.autor.username || 'usuario'}

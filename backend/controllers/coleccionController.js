@@ -38,7 +38,7 @@ const actualizarColeccion = async (req, res) => {
         const coleccionActualizada = await Coleccion.findByIdAndUpdate(
             req.params.id, 
             req.body, 
-            { new: true } // Esto hace que nos devuelva el dato ya actualizado
+            { returnDocument: 'after' } // Esto hace que nos devuelva el dato ya actualizado
         );
         res.status(200).json(coleccionActualizada);
     } catch (error) {

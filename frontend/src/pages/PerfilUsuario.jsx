@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import './PerfilUsuario.css';
 import API_BASE_URL from '../config/api';
+import Breadcrumb from '../components/Breadcrumb';
 
 export default function PerfilUsuario() {
   const { id } = useParams();
@@ -79,6 +80,7 @@ export default function PerfilUsuario() {
 
   return (
     <div className="page-container perfil-usuario-container">
+      <Breadcrumb current={`@${usuario.username}`} />
       <div className="perfil-card">
         <div className="perfil-header-section">
           <div className="perfil-image-wrapper">

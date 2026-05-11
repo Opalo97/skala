@@ -38,7 +38,7 @@ const actualizarLista = async (req, res) => {
         const listaActualizada = await Lista.findByIdAndUpdate(
             req.params.id, 
             req.body, 
-            { new: true }
+            { returnDocument: 'after' }
         );
         res.status(200).json(listaActualizada);
     } catch (error) {

@@ -288,7 +288,7 @@ const actualizarProducto = async (req, res) => {
         const productoActualizado = await Producto.findByIdAndUpdate(
             productoId, 
             datosActualizados, 
-            { new: true } // Esto hace que devuelva el objeto ya actualizado
+            { returnDocument: 'after' } // Esto hace que devuelva el objeto ya actualizado
         );
 
         res.status(200).json(productoActualizado);

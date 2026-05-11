@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useLocation } from "react-router-dom";
 import { BiHeart, BiSolidHeart } from "react-icons/bi";
 import { TbCube } from "react-icons/tb";
 import axios from "axios";
 import "./ItemDetail.css";
 import API_BASE_URL from '../config/api';
+import Breadcrumb from '../components/Breadcrumb';
 
 export default function ItemDetail() {
   const { id } = useParams();
+  const location = useLocation();
   const [producto, setProducto] = useState(null);
   const [cargando, setCargando] = useState(true);
   const [mediaActual, setMediaActual] = useState(null);
@@ -75,8 +77,14 @@ if (cargando) return <div className="p-10 text-center">Cargando producto...</div
   const btnActivo     = totalMedia > 4;
   const mediaEnMain   = mediaActual || allMedia[0] || { type: 'image', url: '' };
 
+  const nextCrumbs = [
+    ...(location.state?.breadcrumbs || [{ label: 'Inicio', to: '/' }]),
+    { label: producto.nombre, to: `/item/${id}` }
+  ]
+
   return (
     <div className="item-detail-page">
+      <Breadcrumb current={producto.nombre} />
       <div className="item-detail-container" style={{flexDirection: "column"}}>
         <div style={{display: "flex", gap: "40px"}}>
           
@@ -133,6 +141,7 @@ if (cargando) return <div className="p-10 text-center">Cargando producto...</div
                   className={`add-thumbnail-btn${btnActivo ? '' : ' disabled'}`}
                   onClick={btnActivo ? () => setModalGaleriaAbierto(true) : undefined}
                   disabled={!btnActivo}
+                  title={btnActivo ? 'Mostrar más multimedia' : 'No hay más multimedia subida.'}
                 >+</button>
               </div>
             )}
@@ -195,7 +204,7 @@ if (cargando) return <div className="p-10 text-center">Cargando producto...</div
             <div className="uploader-section">
               <span className="uploader-title">Subido por ...</span>
               {producto.subidoPor && (
-                <Link to={`/perfil/${producto.subidoPor._id || producto.subidoPor}`} className="uploader-pill">
+                <Link to={`/perfil/${producto.subidoPor._id || producto.subidoPor}`} state={{ breadcrumbs: nextCrumbs }} className="uploader-pill">
                   @{producto.subidoPor.username || 'usuario'}
                 </Link>
               )}
@@ -213,6 +222,7 @@ if (cargando) return <div className="p-10 text-center">Cargando producto...</div
                   <Link
                     key={insp._id}
                     to={`/inspiracion/${insp._id}`}
+                    state={{ breadcrumbs: nextCrumbs }}
                     className="inspiration-card"
                   >
                     <img

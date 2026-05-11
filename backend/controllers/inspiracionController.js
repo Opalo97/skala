@@ -234,7 +234,7 @@ const actualizarInspiracion = async (req, res) => {
                     videos: videosFinales
                 }
             },
-            { new: true } // Para que devuelva la info ya actualizada
+            { returnDocument: 'after' } // Para que devuelva la info ya actualizada
         );
 
         res.status(200).json(inspiracionActualizada);

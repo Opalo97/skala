@@ -72,6 +72,7 @@ export default function Home() {
               <Link
                 key={inspiracion._id}
                 to={`/inspiracion/${inspiracion._id}`}
+                state={{ breadcrumbs: [{ label: 'Inicio', to: '/' }] }}
                 className="inspiracion-item"
               >
                 <img
@@ -91,13 +92,14 @@ export default function Home() {
             <Link
               key={producto._id}
               to={`/item/${producto._id}`}
+              state={{ breadcrumbs: [{ label: 'Inicio', to: '/' }] }}
               className="inspiracion-item producto-item"
             >
               {producto.imagenes?.length > 0 ? (
                 <img
                   src={producto.imagenes[0]}
                   alt={producto.nombre}
-                  className="inspiracion-imagen"
+                  className="producto-imagen"
                 />
               ) : (
                 <div className="producto-placeholder" />
