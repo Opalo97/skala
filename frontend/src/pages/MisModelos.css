@@ -302,3 +302,24 @@
 .model-card.product-card .model-image {
   mix-blend-mode: normal !important;
 }
+/* ── MÓVIL ── */
+@media (max-width: 768px) {
+  .mis-modelos-container {
+    padding: 20px 16px;
+  }
+
+  .grid-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  .header-titles h1,
+  .section-header h1 {
+    font-size: 22px;
+  }
+
+  .image-container {
+    height: 180px;
+    border-radius: 20px;
+  }
+}

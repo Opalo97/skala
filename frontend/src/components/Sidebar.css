@@ -69,6 +69,34 @@
   box-shadow: 0 0 0 3px rgba(129,52,5,0.12);
 }
 
+/* ── MÓVIL: nav horizontal abajo ── */
+@media (max-width: 768px) {
+  .sidebar {
+    flex-direction: row;
+    width: 100%;
+    height: 64px;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0 8px;
+    justify-content: space-around;
+    gap: 0;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  .sidebar-item {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+  }
+
+  /* Ocultar tooltips en móvil */
+  .sidebar-item::after {
+    display: none;
+  }
+}
+
 /* Tooltips */
 .sidebar-item {
   position: relative;

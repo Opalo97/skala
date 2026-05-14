@@ -11,8 +11,9 @@ body, html {
 
 #root {
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
-
 
 /* Header: fixed en la parte superior */
 .header {
@@ -33,30 +34,23 @@ body, html {
   height: 140px;
   width: auto;
   object-fit: contain;
- 
 }
 
-/* Contenido: scrolleable entre header y footer */
+/* Contenido principal */
 .content {
+  flex: 1;
   margin-left: 60px;
-  margin-top: 60px; /* altura del header */
-  margin-bottom: 60px; /* altura aproximada del footer */
+  margin-top: 70px;
   padding: 20px;
-  min-height: calc(100vh - 60px - 60px);
 }
 
-
-
-/* Footer: fixed en la parte inferior */
+/* Footer: al final del flujo (no fijo) */
 .footer {
   background-color: #813405;
   color: white;
   text-align: center;
   padding: 12px;
-  position: fixed;
-  bottom: 0;
-  left: 60px;
-  right: 0;
+  margin-left: 60px;
   z-index: 99;
 }
 
@@ -69,3 +63,22 @@ body, html {
   text-decoration: underline;
 }
 
+/* ── MÓVIL (≤ 768px) ── */
+@media (max-width: 768px) {
+  .header {
+    left: 0;
+    height: 60px;
+  }
+
+  .content {
+    margin-left: 0;
+    margin-top: 60px;
+    margin-bottom: 64px; /* espacio para la nav inferior */
+    padding: 16px 12px;
+  }
+
+  .footer {
+    margin-left: 0;
+    margin-bottom: 64px; /* queda por encima de la nav inferior */
+  }
+}

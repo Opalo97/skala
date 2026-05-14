@@ -473,3 +473,51 @@
   opacity: 0.45;
   cursor: default;
 }
+
+/* ── MÓVIL ── */
+@media (max-width: 768px) {
+  .insp-detail-container {
+    padding: 20px 16px;
+    gap: 24px;
+  }
+
+  .insp-top-row {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .main-image {
+    height: 300px;
+    border-radius: 20px;
+  }
+
+  .thumbnails-column {
+    flex-direction: row;
+    width: 100%;
+    height: auto;
+    overflow-x: auto;
+  }
+
+  .thumbnail-img {
+    width: 70px;
+    height: 80px;
+    flex-shrink: 0;
+  }
+
+  .gallery-section {
+    flex-direction: column-reverse;
+  }
+
+  .insp-info-section {
+    width: 100%;
+  }
+
+  .insp-title {
+    font-size: 22px;
+  }
+
+  .insp-bottom-row {
+    flex-direction: column;
+    gap: 20px;
+  }
+}
