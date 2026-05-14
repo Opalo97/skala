@@ -29,6 +29,7 @@ import ColeccionDetalle from './pages/ColeccionDetalle'
 import ListaDetalle from './pages/ListaDetalle'
 import ListaSeguidores from './pages/ListaSeguidores'
 import ListaSeguidos from './pages/ListaSeguidos'
+import Espacio3d from './pages/Espacio3d'
 
 
 function App() {
@@ -60,6 +61,7 @@ function App() {
           <Route path="/seguidores/:id" element={<ListaSeguidores />} />
           <Route path="/seguidos/:id" element={<ListaSeguidos />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/espacio3d" element={<Espacio3d />} />
         </Route>
       </Routes>
     </Router>
